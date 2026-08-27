@@ -1,0 +1,1736 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="一套专门写给完全零基础、非计算机行业小白的 GitHub 中文教程：专业名词大扫盲、Windows 下的详细操作步骤、常见问题与命令速查表。">
+<title>GitHub 零基础教程 · 从小白到发布你的第一个开源项目</title>
+<style>
+:root{
+  --bg:#08111F;
+  --bg2:#060D18;
+  --panel:#0E1A2D;
+  --panel-2:#132139;
+  --panel-3:#182742;
+  --border:#1D2B44;
+  --border-2:#26375A;
+  --text:#E6EDF7;
+  --muted:#8EA0B8;
+  --accent:#62F6A8;
+  --accent-dim:rgba(98,246,168,.13);
+  --link:#7AB7FF;
+  --yellow:#FFD166;
+  --pink:#FF7AB6;
+  --purple:#B197FF;
+  --cyan:#4DD0E1;
+  --red:#FF7B7B;
+  --orange:#FFA94D;
+  --mono:"JetBrains Mono","Cascadia Code",Consolas,"Courier New",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --radius:12px;
+  --header-h:58px;
+  --sidebar-w:290px;
+}
+*{box-sizing:border-box;}
+html{scroll-padding-top:calc(var(--header-h) + 14px);}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.8;
+  color-scheme:dark;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{max-width:100%;height:auto;}
+h1,h2,h3,h4{margin:0 0 .5em;line-height:1.35;}
+h2{font-size:1.5rem;}
+h3{font-size:1.12rem;}
+p{margin:0 0 1em;}
+a{color:var(--link);}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--link);outline-offset:2px;border-radius:4px;}
+
+/* ===== 顶部栏 ===== */
+.site-header{
+  position:fixed;top:0;left:0;right:0;height:var(--header-h);
+  background:rgba(8,17,31,.92);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+  z-index:50;
+  display:flex;align-items:center;gap:12px;padding:0 18px;
+}
+.hamb{
+  display:none;background:none;border:1px solid var(--border);color:var(--text);
+  width:40px;height:40px;border-radius:8px;font-size:1.15rem;cursor:pointer;
+  align-items:center;justify-content:center;flex:none;
+}
+.brand{font-weight:800;color:var(--accent);font-size:1.02rem;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.brand small{color:var(--muted);font-weight:400;margin-left:8px;font-size:.82rem;}
+
+/* ===== 侧边目录 ===== */
+.sidebar{
+  position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);
+  background:var(--panel);border-right:1px solid var(--border);
+  overflow-y:auto;z-index:40;padding:20px 14px 40px;
+}
+.side-label{color:var(--muted);font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;padding:0 12px 10px;margin:0;}
+.sidebar a{
+  display:block;color:var(--muted);text-decoration:none;padding:7px 12px;border-radius:8px;
+  font-size:.92rem;border-left:2px solid transparent;
+}
+.sidebar a:hover{color:var(--text);background:var(--panel-3);}
+.sidebar a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-dim);}
+.side-ch{display:block;color:var(--text);font-weight:700;padding:12px 12px 4px;font-size:.92rem;}
+.side-hint{color:var(--muted);font-size:.8rem;padding:10px 12px 0;border-top:1px dashed var(--border);margin-top:14px;}
+.overlay{display:none;}
+
+/* ===== 主内容 ===== */
+.main{margin-left:var(--sidebar-w);padding:calc(var(--header-h) + 30px) 30px 70px;}
+.content{max-width:940px;margin:0 auto;}
+
+/* ===== 首屏 ===== */
+.hero{padding:8px 0 10px;}
+.hero h1{font-size:2rem;line-height:1.3;margin:0 0 10px;}
+.hero h1 .hl{color:var(--accent);}
+.hero .sub{color:var(--muted);font-size:1.08rem;margin:0 0 20px;line-height:1.9;}
+.pills-row{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px;}
+.tag{display:inline-block;font-size:.78rem;padding:3px 10px;border-radius:999px;border:1px solid var(--border-2);color:var(--muted);}
+.tag.green{color:var(--accent);border-color:var(--accent);}
+.tag.blue{color:var(--link);border-color:var(--link);}
+.tag.yellow{color:var(--yellow);border-color:var(--yellow);}
+.tag.purple{color:var(--purple);border-color:var(--purple);}
+
+/* ===== 章节 ===== */
+.chapter{margin-top:58px;scroll-margin-top:76px;}
+.chapter-head{display:flex;align-items:baseline;gap:14px;margin-bottom:16px;padding-bottom:14px;border-bottom:2px solid var(--border);}
+.chapter-no{font-family:var(--mono);color:var(--accent);font-size:1.35rem;font-weight:800;white-space:nowrap;}
+.chapter h2{margin:0;font-size:1.5rem;}
+.chapter h3{color:var(--accent);margin:30px 0 10px;font-size:1.13rem;}
+.chapter h3::before{content:"▸ ";color:var(--link);}
+.lead{color:#C7D4E6;font-size:1.02rem;}
+ul.plain{padding-left:1.2em;color:#C7D4E6;}
+ul.plain li{margin:.35em 0;}
+b.k{color:var(--accent);}
+
+/* ===== 步骤卡 ===== */
+.steps{counter-reset:step;list-style:none;margin:18px 0;padding:0;display:grid;gap:14px;}
+.steps>li{
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 16px 10px 52px;position:relative;color:#C7D4E6;
+}
+.steps>li::before{
+  counter-increment:step;content:counter(step);
+  position:absolute;left:14px;top:14px;width:28px;height:28px;border-radius:8px;
+  background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent);
+  font-weight:700;font-family:var(--mono);font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.steps>li>strong{color:var(--text);display:block;margin-bottom:2px;}
+
+/* ===== 命令块 ===== */
+.cmd{margin:16px 0;}
+.cmd figcaption{font-size:.84rem;color:var(--muted);margin-bottom:6px;}
+.cmd figcaption .where{color:var(--accent);font-weight:600;}
+pre{
+  background:#0B1526;border:1px solid var(--border);border-radius:10px;
+  padding:13px 16px;overflow-x:auto;font-family:var(--mono);font-size:.9rem;line-height:1.7;
+  margin:8px 0;color:#D8F6E8;white-space:pre;
+}
+pre .p{color:var(--accent);user-select:none;}
+pre .c{color:var(--muted);}
+pre.out{color:#AEC7E4;background:#0A1220;border-style:dashed;}
+pre.markdown{color:#E3D9B2;background:#141019;}
+
+/* ===== 提示框 ===== */
+.box{border-radius:var(--radius);padding:12px 16px;margin:14px 0;font-size:.93rem;line-height:1.8;}
+.box .bt{display:block;font-weight:700;margin-bottom:2px;}
+.box.note{background:rgba(98,246,168,.07);border:1px solid rgba(98,246,168,.4);}
+.box.note .bt{color:var(--accent);}
+.box.warn{background:rgba(255,209,102,.07);border:1px solid rgba(255,209,102,.4);}
+.box.warn .bt{color:var(--yellow);}
+.box.danger{background:rgba(255,123,123,.07);border:1px solid rgba(255,123,123,.4);}
+.box.danger .bt{color:var(--red);}
+.box.info{background:rgba(122,183,255,.07);border:1px solid rgba(122,183,255,.4);}
+.box.info .bt{color:var(--link);}
+
+/* ===== 名词卡片 ===== */
+.filterbar{position:sticky;top:calc(var(--header-h) + 10px);z-index:20;background:var(--bg);padding:8px 0 12px;}
+.filter-input{
+  width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);
+  padding:11px 14px;border-radius:10px;font-size:.95rem;font-family:var(--sans);
+}
+.filter-input:focus{border-color:var(--link);}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.pill{
+  background:var(--panel);border:1px solid var(--border);color:var(--muted);
+  padding:6px 13px;border-radius:999px;font-size:.84rem;cursor:pointer;
+}
+.pill.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+.gloss-result{color:var(--muted);font-size:.85rem;margin:8px 2px 2px;}
+.gloss-group{margin:22px 0 30px;}
+.gloss-group>h4{color:var(--link);font-size:1.02rem;margin:0 0 10px;padding-left:10px;border-left:3px solid var(--link);}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;}
+.gloss-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;}
+.gloss-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px;}
+.gloss-cn{font-weight:700;color:var(--text);font-size:1rem;}
+.gloss-en{font-family:var(--mono);font-size:.74rem;color:var(--accent);white-space:nowrap;}
+.gloss-card p{margin:.3em 0;font-size:.9rem;color:#C0CDE0;}
+.gloss-meta{color:var(--purple);}
+.gloss-meta b{color:var(--yellow);font-weight:600;}
+.gloss-card.hide,.gloss-group.hide{display:none;}
+
+/* ===== 表格 ===== */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);margin:16px 0;}
+.table-wrap caption{text-align:left;color:var(--muted);font-size:.86rem;padding:10px 14px 4px;caption-side:top;}
+table{width:100%;border-collapse:collapse;font-size:.92rem;min-width:600px;}
+th{background:var(--panel-2);color:var(--accent);text-align:left;padding:10px 14px;border-bottom:1px solid var(--border-2);white-space:nowrap;}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:#C7D4E6;vertical-align:top;}
+tbody tr:nth-child(even){background:rgba(255,255,255,.025);}
+td code{font-family:var(--mono);font-size:.86em;color:var(--cyan);background:rgba(77,208,225,.08);padding:1px 6px;border-radius:5px;}
+td .en{display:block;color:var(--muted);font-size:.8em;}
+
+/* ===== FAQ ===== */
+details{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);margin:12px 0;}
+details[open]{border-color:var(--border-2);}
+summary{cursor:pointer;padding:13px 16px;font-weight:600;color:var(--text);}
+summary::marker{color:var(--accent);}
+.faq-body{padding:2px 16px 15px;border-top:1px dashed var(--border);color:#C7D4E6;font-size:.94rem;}
+.faq-row{margin:8px 0;padding-left:14px;border-left:3px solid var(--border);}
+.faq-row .fh{color:var(--yellow);font-weight:700;}
+.faq-row.reason .fh{color:var(--link);}
+.faq-row.solve .fh{color:var(--accent);}
+.faq-body ol{padding-left:1.3em;margin:.4em 0;}
+
+/* ===== 目录卡片 ===== */
+.toc-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;}
+.toc-card{
+  display:block;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s;
+}
+.toc-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.toc-card .no{color:var(--accent);font-family:var(--mono);font-size:.78rem;font-weight:700;}
+.toc-card b{display:block;margin:3px 0 2px;font-size:.98rem;}
+.toc-card span{color:var(--muted);font-size:.84rem;}
+
+/* ===== 关系图 ===== */
+.flow-wrap{margin:18px 0;overflow-x:auto;}
+.flow-wrap svg{display:block;margin:0 auto;min-width:560px;}
+
+/* ===== 返回顶部 ===== */
+.back-top{
+  position:fixed;right:22px;bottom:22px;width:46px;height:46px;border-radius:50%;
+  background:var(--accent);color:#06260F;border:none;font-size:1.15rem;cursor:pointer;
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:60;font-family:var(--mono);
+}
+.back-top.show{opacity:1;pointer-events:auto;}
+
+/* ===== 页脚 ===== */
+.site-footer{border-top:1px solid var(--border);margin-top:64px;padding:26px 0 10px;color:var(--muted);font-size:.9rem;}
+.site-footer a{color:var(--link);}
+
+/* ===== 响应式 ===== */
+@media (max-width:1023px){
+  .sidebar{
+    transform:translateX(-100%);transition:transform .25s ease;
+    box-shadow:none;width:min(320px,86vw);
+  }
+  .sidebar.open{transform:translateX(0);box-shadow:0 0 50px rgba(0,0,0,.55);}
+  .hamb{display:inline-flex;}
+  .overlay{
+    display:block;position:fixed;inset:var(--header-h) 0 0 0;background:rgba(3,8,16,.62);
+    z-index:39;opacity:0;pointer-events:none;transition:opacity .25s;
+  }
+  .overlay.show{opacity:1;pointer-events:auto;}
+  .main{margin-left:0;padding:calc(var(--header-h) + 22px) 16px 70px;}
+  .brand small{display:none;}
+}
+@media (max-width:520px){
+  .hero h1{font-size:1.6rem;}
+  .chapter h2{font-size:1.25rem;}
+  .chapter-no{font-size:1.05rem;}
+  .steps>li{padding-left:14px;padding-top:52px;}
+  .steps>li::before{top:14px;left:14px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}
+}
+/* ===== 打印 ===== */
+@media print{
+  .site-header,.sidebar,.overlay,.back-top,.filterbar{display:none!important;}
+  body{background:#fff;color:#111;}
+  .main{margin:0;padding:0;}
+  .content{max-width:none;}
+  .table-wrap,pre,.flow-wrap{overflow:visible;}
+  table{min-width:0;}
+  .gloss-grid{grid-template-columns:repeat(2,1fr);}
+  a{color:#0645AD;}
+  h2,h3{break-after:avoid;}
+  pre,.cmd,.gloss-card,details,table{break-inside:avoid;}
+  details:not([open])>:not(summary){display:block!important;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <button id="hamb" class="hamb" aria-label="打开目录菜单" aria-expanded="false">☰</button>
+  <div class="brand" role="img" aria-label="教程标识">⌥ GitHub 零基础教程<small>小白友好 · Windows 版</small></div>
+</header>
+
+<nav id="sidebar" class="sidebar" aria-label="章节目录">
+  <p class="side-label">本教程目录 · 点击跳转</p>
+  <a href="#sec-intro">序 · 这套教程怎么用</a>
+  <a href="#toc-main">目录 · 全章节总览</a>
+  <span class="side-ch">第一章 · 专业名词大扫盲</span>
+  <a href="#term-basic">1.1 Git / GitHub / 版本控制</a>
+  <a href="#glossary">1.2 名词卡片大合集（可搜索）</a>
+  <a href="#chap2">第二章 · 注册账号并认识界面</a>
+  <a href="#chap3">第三章 · Windows 安装配置 Git</a>
+  <a href="#chap4">第四章 · 本地 Git 入门</a>
+  <a href="#chap5">第五章 · 连接远程仓库</a>
+  <a href="#chap6">第六章 · 分支与协作</a>
+  <a href="#chap7">第七章 · Fork 参与他人项目</a>
+  <a href="#chap8">第八章 · 项目主页与发布</a>
+  <a href="#chap9">第九章 · 常见问题和解决环境</a>
+  <a href="#appendix">附录 · 命令速查表</a>
+  <a href="#resources">相关资源</a>
+  <a href="#finish">结语 · 下一步</a>
+  <p class="side-hint">💡 遇到不懂的词，先回第一章用搜索框查一查。</p>
+</nav>
+<div id="nav-overlay" class="overlay" aria-hidden="true"></div>
+
+<main class="main">
+<div class="content">
+
+<section class="hero">
+  <h1>GitHub 零基础教程<span class="hl">：从小白到发布你的第一个开源项目</span></h1>
+  <p class="sub">这套教程完全为<strong>非计算机行业、零基础</strong>的你而写。你正在学 Python，目标是以后做出自己的 GitHub 开源项目——没关系，跟着这份教程一步步来，今天就能把"存档""上传""分享"这些事彻底搞懂。全程用大白话和生活中的类比，不堆术语。</p>
+  <div class="pills-row">
+    <span class="tag green">完全零基础</span>
+    <span class="tag blue">Windows 电脑为主</span>
+    <span class="tag yellow">全程大白话 + 类比</span>
+    <span class="tag purple">所有操作可照着点</span>
+  </div>
+</section>
+
+<section class="chapter" id="sec-intro">
+  <div class="chapter-head"><span class="chapter-no">序</span><h2>这套教程怎么用？先花 1 分钟看这里</h2></div>
+  <p class="lead">很多人学 Git / GitHub 半途而废，不是因为它难，而是因为<strong>第一章就把人吓跑了</strong>——满屏术语、命令、黑窗口。所以我们反着来：</p>
+  <ul class="plain">
+    <li><b class="k">第一章</b>：先扫盲，把你会遇到的所有专业名词讲成人话，并配了<strong>可搜索的名词卡片</strong>，之后任何时候遇到不懂的词都能回来查；</li>
+    <li><b class="k">第二～八章</b>：从注册账号到发布项目，每个操作都告诉你"<strong>在哪里点、输入什么、为什么、会看到什么</strong>"；</li>
+    <li><b class="k">第九章</b>：把新手最容易踩的坑（报错、乱码、连不上）整理成"现象 → 原因 → 解决"，出问题照方抓药；</li>
+    <li><b class="k">附录</b>：一份 Git 常用命令速查表，复制粘贴就能用。</li>
+  </ul>
+  <div class="box note">
+    <span class="bt">💡 学习小建议</span>
+    不要追求一次全看完。建议跟着章节"边读边做"：电脑在旁边，读到命令就在 Git Bash 里敲一遍。Git 最有用的学习方式就是"亲手存档几次"。
+  </div>
+</section>
+
+<section class="chapter" id="toc-main">
+  <div class="chapter-head"><span class="chapter-no">📑</span><h2>目录 · 全章节总览（点击直接跳转）</h2></div>
+  <div class="toc-cards">
+    <a class="toc-card" href="#term-basic"><span class="no">第一章 · 01</span><b>专业名词大扫盲</b><span>版本控制、仓库、提交、分支、PR……全讲成人话</span></a>
+    <a class="toc-card" href="#chap2"><span class="no">第二章 · 02</span><b>注册 GitHub 账号</b><span>注册并认识网站界面</span></a>
+    <a class="toc-card" href="#chap3"><span class="no">第三章 · 03</span><b>Windows 安装配置 Git</b><span>安装、打开 Git Bash、设置名字邮箱</span></a>
+    <a class="toc-card" href="#chap4"><span class="no">第四章 · 04</span><b>本地 Git 入门</b><span>init / add / commit，学会"存档"</span></a>
+    <a class="toc-card" href="#chap5"><span class="no">第五章 · 05</span><b>连接远程仓库</b><span>SSH 配置 + clone / push / pull</span></a>
+    <a class="toc-card" href="#chap6"><span class="no">第六章 · 06</span><b>分支与协作</b><span>branch / merge / 冲突 / Pull Request</span></a>
+    <a class="toc-card" href="#chap7"><span class="no">第七章 · 07</span><b>Fork 参与开源</b><span>复制别人项目，改完申请合并回去</span></a>
+    <a class="toc-card" href="#chap8"><span class="no">第八章 · 08</span><b>项目主页与发布</b><span>README + Markdown + Pages + Release</span></a>
+    <a class="toc-card" href="#chap9"><span class="no">第九章 · 09</span><b>常见问题和解决环境</b><span>12 个新手高频坑，现象→原因→解决</span></a>
+    <a class="toc-card" href="#appendix"><span class="no">附录</span><b>Git 常用命令速查表</b><span>复制粘贴就能用</span></a>
+    <a class="toc-card" href="#resources"><span class="no">附录</span><b>相关资源</b><span>官方文档、图形化客户端等</span></a>
+    <a class="toc-card" href="#finish"><span class="no">尾声</span><b>结语 · 下一步</b><span>学完之后做什么</span></a>
+  </div>
+</section>
+
+<section class="chapter" id="chap1">
+  <div class="chapter-head"><span class="chapter-no">第一章</span><h2>专业名词大扫盲：把"黑话"讲成人话</h2></div>
+  <p class="lead">这一章是整份教程的"字典"。里面每一个词，都是你在接触 Git / GitHub 时会撞上的。别急着背，<strong>先读一遍混个脸熟</strong>，操作到哪一步再回来查，自然就记住了。</p>
+
+  <h3 id="term-basic">1.1 三个绕不开的名字：Git、GitHub、版本控制</h3>
+  <p>很多教程上来就甩术语，把人绕晕。其实只要记住这三兄弟的分工，后面全通：</p>
+  <ul class="plain">
+    <li><b class="k">版本控制（Version Control）</b>：是一种"思想/方法"——帮你<strong>记录文件每一次改动、随时回到任意历史版本</strong>。类比：游戏存档。每过一关存一次，想重玩哪关都行。</li>
+    <li><b class="k">Git</b>：是"工具"。安装在<strong>你自己电脑上</strong>的免费软件，专门负责在本机做版本控制。类比：电脑里自带的"存档管理软件"，只管你这台电脑。</li>
+    <li><b class="k">GitHub</b>：是"网站/平台"。把用 Git 管理的项目放到<strong>网上</strong>，能备份、能分享、能多人协作。类比：带时间机的网盘 + 程序员朋友圈。</li>
+  </ul>
+  <div class="flow-wrap" role="img" aria-label="三兄弟关系示意图：你写代码交给 Git 做本地存档，再推送到 GitHub 做云端备份与分享，别人也能一起协作">
+    <svg viewBox="0 0 760 150" role="img" aria-labelledby="flow-title flow-desc">
+      <title id="flow-title">Git / GitHub / 版本控制的关系</title>
+      <desc id="flow-desc">你写的代码交给电脑里的 Git 做本地版本控制，Git 再通过 push 把项目推送到 GitHub 网站做云端备份、分享和协作。</desc>
+      <rect x="10" y="35" width="210" height="80" rx="14" fill="#0E1A2D" stroke="#1D2B44"/>
+      <text x="115" y="70" text-anchor="middle" fill="#E6EDF7" font-size="16" font-weight="700">你写的代码</text>
+      <text x="115" y="94" text-anchor="middle" fill="#8EA0B8" font-size="12">项目文件夹</text>
+      <line x1="225" y1="75" x2="270" y2="75" stroke="#62F6A8" stroke-width="3"/>
+      <polygon points="268,68 282,75 268,82" fill="#62F6A8"/>
+      <rect x="285" y="35" width="205" height="80" rx="14" fill="#0E1A2D" stroke="#62F6A8" stroke-width="1.5"/>
+      <text x="387" y="70" text-anchor="middle" fill="#E6EDF7" font-size="16" font-weight="700">Git（本地工具）</text>
+      <text x="387" y="94" text-anchor="middle" fill="#8EA0B8" font-size="12">在电脑上做"存档"</text>
+      <line x1="495" y1="75" x2="540" y2="75" stroke="#7AB7FF" stroke-width="3"/>
+      <polygon points="538,68 552,75 538,82" fill="#7AB7FF"/>
+      <rect x="555" y="35" width="200" height="80" rx="14" fill="#0E1A2D" stroke="#7AB7FF" stroke-width="1.5"/>
+      <text x="655" y="70" text-anchor="middle" fill="#E6EDF7" font-size="16" font-weight="700">GitHub（网站）</text>
+      <text x="655" y="94" text-anchor="middle" fill="#8EA0B8" font-size="12">云端备份 · 分享 · 协作</text>
+      <text x="387" y="130" text-anchor="middle" fill="#FFD166" font-size="12">push 上传 / pull 下载 / clone 复制</text>
+    </svg>
+  </div>
+  <div class="box info">
+    <span class="bt">一句话记住</span>
+    <strong>Git 管"怎么记"（本地工具），GitHub 管"放哪、给谁看"（网上平台），版本控制是它们共同做的事。</strong>后面所有术语，都是围绕"本地存档 + 云端同步"这两个动作展开的。
+  </div>
+
+  <h3 id="glossary">1.2 名词卡片大合集（40 个词条，支持搜索）</h3>
+  <p>下面按主题分成 8 组。用上面的搜索框输入中文、英文或关键词（比如"分支""commit""冲突"），卡片会自动筛选，特别方便以后当字典查。</p>
+
+  <div class="filterbar">
+    <input id="gloss-search" class="filter-input" type="search" placeholder="🔍 输入关键词查询，例如：分支、commit、仓库、冲突、SSH……" aria-label="搜索名词">
+    <div class="pills">
+      <button type="button" class="pill active" data-cat="all">全部</button>
+      <button type="button" class="pill" data-cat="core">核心概念</button>
+      <button type="button" class="pill" data-cat="branch">分支与协作</button>
+      <button type="button" class="pill" data-cat="transfer">上传与下载</button>
+      <button type="button" class="pill" data-cat="community">社区互动</button>
+      <button type="button" class="pill" data-cat="files">项目文件与开源</button>
+      <button type="button" class="pill" data-cat="security">连接与安全</button>
+      <button type="button" class="pill" data-cat="basics">电脑基础词</button>
+      <button type="button" class="pill" data-cat="advanced">进阶小工具</button>
+    </div>
+    <p class="gloss-result" id="gloss-result" aria-live="polite"></p>
+  </div>
+
+  <div id="gloss-groups">
+  <div class="gloss-group" data-cat="core">
+    <h4>核心概念：版本控制三兄弟与仓库</h4>
+    <div class="gloss-grid">
+      <article class="gloss-card" data-search="版本控制 存档 记录 历史 时光机 version control">
+        <div class="gloss-head"><span class="gloss-cn">版本控制</span><span class="gloss-en">Version Control</span></div>
+        <p>一种"记录文件每次改动"的方法，能随时回到以前任意一个版本，还能看出每次改了什么、谁改的。</p>
+        <p class="gloss-meta">类比：<b>游戏存档</b>，每到一个节点存一次，想回哪一关都行。</p>
+      </article>
+      <article class="gloss-card" data-search="git 工具 软件 本地 版本控制">
+        <div class="gloss-head"><span class="gloss-cn">Git</span><span class="gloss-en">Git</span></div>
+        <p>安装在你自己电脑上的免费软件，负责在你电脑上做版本控制，是这一切的"本地引擎"。</p>
+        <p class="gloss-meta">类比：<b>电脑里的存档管理软件</b>，只管你这台机器。</p>
+      </article>
+      <article class="gloss-card" data-search="github 网站 平台 云端 备份 分享 协作">
+        <div class="gloss-head"><span class="gloss-cn">GitHub</span><span class="gloss-en">GitHub</span></div>
+        <p>一个存放、分享、协作管理项目的网站。把你的项目放上去，既能云端备份，也能给别人看、一起改。</p>
+        <p class="gloss-meta">类比：<b>带时间机的网盘 + 程序员朋友圈</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="仓库 项目 文件夹 repository repo">
+        <div class="gloss-head"><span class="gloss-cn">仓库</span><span class="gloss-en">Repository</span></div>
+        <p>一个项目以及它的全部修改历史所在的地方，缩写叫 repo。Git 的一切操作都发生在一个个仓库里。</p>
+        <p class="gloss-meta">类比：<b>带历史记录的"项目文件夹"</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="本地仓库 电脑 硬盘 local repository">
+        <div class="gloss-head"><span class="gloss-cn">本地仓库</span><span class="gloss-en">Local Repository</span></div>
+        <p>存在你自己电脑硬盘上的那份仓库，平时干活、存档都在这里。</p>
+        <p class="gloss-meta">类比：<b>电脑里的"原稿文件夹"</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="远程仓库 云端 github 网站 remote repository">
+        <div class="gloss-head"><span class="gloss-cn">远程仓库</span><span class="gloss-en">Remote Repository</span></div>
+        <p>存在 GitHub 网站上的那份仓库，是云端的备份，也能共享给别人、一起协作。</p>
+        <p class="gloss-meta">类比：<b>网盘上的同步文件夹</b>，本地丢了还能恢复。</p>
+      </article>
+      <article class="gloss-card" data-search="提交 存档 保存 commit">
+        <div class="gloss-head"><span class="gloss-cn">提交</span><span class="gloss-en">Commit</span></div>
+        <p>把当前所有改动"拍一张照"存起来，记录谁、在什么时候、改了什么。这是 Git 里最重要的动作。</p>
+        <p class="gloss-meta">类比：<b>游戏里点"保存进度"</b>，之后随时能回到这一刻。</p>
+      </article>
+      <article class="gloss-card" data-search="暂存区 装箱 add staging area">
+        <div class="gloss-head"><span class="gloss-cn">暂存区</span><span class="gloss-en">Staging Area</span></div>
+        <p>提交之前，先放"准备这次一起存档的文件"的一个中间区域。你可以挑一部分文件提交，不用每次都全存。</p>
+        <p class="gloss-meta">类比：<b>打包行李时的"待装行李箱"</b>，先放进去，最后一起托运（提交）。</p>
+      </article>
+      <article class="gloss-card" data-search="add 添加 暂存 装箱">
+        <div class="gloss-head"><span class="gloss-cn">add（添加）</span><span class="gloss-en">git add</span></div>
+        <p>把文件放进暂存区的动作。命令是 git add 文件名。只有被 add 过的文件，才会进入下一次提交。</p>
+        <p class="gloss-meta">类比：<b>把要带的行李一件件装进行李箱</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="快照 照片 snapshot">
+        <div class="gloss-head"><span class="gloss-cn">快照</span><span class="gloss-en">Snapshot</span></div>
+        <p>每次提交那一刻，所有文件内容被完整记录下来的"即时照片"。Git 靠快照实现"回到过去"。</p>
+        <p class="gloss-meta">类比：<b>给房间拍照留档</b>，照片记录的是拍照那一刻的样子。</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="gloss-group" data-cat="branch">
+    <h4>分支与协作：平行宇宙、合并与申请</h4>
+    <div class="gloss-grid">
+      <article class="gloss-card" data-search="分支 草稿 平行宇宙 branch">
+        <div class="gloss-head"><span class="gloss-cn">分支</span><span class="gloss-en">Branch</span></div>
+        <p>从主线复制出来的一个独立工作区，在里面随便改、随便试，不影响主线。改满意了再合并回去。</p>
+        <p class="gloss-meta">类比：<b>平行宇宙 / 草稿本</b>，写坏了扔掉，正式本不受影响。</p>
+      </article>
+      <article class="gloss-card" data-search="主分支 主线 定稿 main master">
+        <div class="gloss-head"><span class="gloss-cn">主分支</span><span class="gloss-en">main / master</span></div>
+        <p>项目默认的那条主线，通常放稳定、正式的版本。新项目叫 main，老项目叫 master，一回事。</p>
+        <p class="gloss-meta">类比：<b>最终定稿的"正式文档"</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="合并 誊写 merge">
+        <div class="gloss-head"><span class="gloss-cn">合并</span><span class="gloss-en">Merge</span></div>
+        <p>把一个分支的改动合回另一个分支，让两条线的历史重新并到一起。</p>
+        <p class="gloss-meta">类比：<b>把草稿本上的修改誊写进正式文档</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="冲突 打架 conflict">
+        <div class="gloss-head"><span class="gloss-cn">冲突</span><span class="gloss-en">Conflict</span></div>
+        <p>两个人改了同一处内容，Git 不知道该听谁的，就停下来请你"拍板"。这是正常现象，不是报错。</p>
+        <p class="gloss-meta">类比：<b>两份答案不一样，需要你决定保留哪份</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="拉取请求 合并申请 pr pull request">
+        <div class="gloss-head"><span class="gloss-cn">拉取请求</span><span class="gloss-en">Pull Request</span></div>
+        <p>向项目主人申请"把我分支的改动合并进主线"，缩写 PR。团队协作和开源贡献都靠它。</p>
+        <p class="gloss-meta">类比：<b>交作业给老师批改</b>，通过后才记入正式成绩。</p>
+      </article>
+      <article class="gloss-card" data-search="fork 复制 副本 抄作业">
+        <div class="gloss-head"><span class="gloss-cn">Fork（派生）</span><span class="gloss-en">Fork</span></div>
+        <p>把别人的仓库整个复制一份到你自己名下，变成"你的副本"，随便改，不影响原项目。</p>
+        <p class="gloss-meta">类比：<b>把别人家的菜谱抄一份带回家</b>，在家随便改良。</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="gloss-group" data-cat="transfer">
+    <h4>上传与下载：克隆、推送、拉取</h4>
+    <div class="gloss-grid">
+      <article class="gloss-card" data-search="克隆 下载 复制 clone">
+        <div class="gloss-head"><span class="gloss-cn">克隆</span><span class="gloss-en">Clone</span></div>
+        <p>把远程仓库完整地下载到你电脑上，包含它的全部修改历史。拿到一个项目，第一步通常是 clone。</p>
+        <p class="gloss-meta">类比：<b>把网盘整个文件夹复制到电脑</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="推送 上传 push">
+        <div class="gloss-head"><span class="gloss-cn">推送</span><span class="gloss-en">Push</span></div>
+        <p>把你本地新产生的提交，上传到远程仓库。做完这步，GitHub 上就能看到你的改动了。</p>
+        <p class="gloss-meta">类比：<b>把电脑文件上传到网盘</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="拉取 下载 同步 pull">
+        <div class="gloss-head"><span class="gloss-cn">拉取</span><span class="gloss-en">Pull</span></div>
+        <p>把远程仓库的最新改动下载到本地，和本地合并。别人更新了项目，你 pull 一下就能同步。</p>
+        <p class="gloss-meta">类比：<b>把网盘更新过的内容同步到电脑</b>。</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="gloss-group" data-cat="community">
+    <h4>社区互动：Star、Issue、Release 等</h4>
+    <div class="gloss-grid">
+      <article class="gloss-card" data-search="star 点赞 收藏">
+        <div class="gloss-head"><span class="gloss-cn">Star（星标）</span><span class="gloss-en">Star</span></div>
+        <p>给项目点"赞/收藏"，表示喜欢、以后好找。星标数越高，通常代表项目越受欢迎。</p>
+        <p class="gloss-meta">类比：<b>朋友圈点赞 + 收藏</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="watch 关注 订阅">
+        <div class="gloss-head"><span class="gloss-cn">Watch（关注）</span><span class="gloss-en">Watch</span></div>
+        <p>关注某个项目，它一有动态（新提交、新 Issue、新 Release）就会通知你。</p>
+        <p class="gloss-meta">类比：<b>订阅了某个公众号</b>，更新会推送给你。</p>
+      </article>
+      <article class="gloss-card" data-search="issue 问题 工单 留言板 bug">
+        <div class="gloss-head"><span class="gloss-cn">Issue（议题）</span><span class="gloss-en">Issue</span></div>
+        <p>项目里的"问题工单"，用来报 bug、提建议、发起讨论，每条都有编号可以引用。</p>
+        <p class="gloss-meta">类比：<b>意见箱 / 留言板</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="release 发布 版本 安装包">
+        <div class="gloss-head"><span class="gloss-cn">Release（发布版）</span><span class="gloss-en">Release</span></div>
+        <p>项目正式发布的一个版本，别人可以下载到对应时点的代码或安装包，通常配一个版本号。</p>
+        <p class="gloss-meta">类比：<b>官方发布的"安装包"</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="tag 标签 标记 版本号">
+        <div class="gloss-head"><span class="gloss-cn">Tag（标签）</span><span class="gloss-en">Tag</span></div>
+        <p>给某一次提交贴一个标签，比如 v1.0.0，方便快速定位到某个重要版本。</p>
+        <p class="gloss-meta">类比：<b>书签</b>，一翻就找到那个版本。</p>
+      </article>
+      <article class="gloss-card" data-search="milestone 里程碑 目标">
+        <div class="gloss-head"><span class="gloss-cn">Milestone（里程碑）</span><span class="gloss-en">Milestone</span></div>
+        <p>把一批 Issue 归到同一个目标节点下，表示这些任务都是在为同一个目标服务。</p>
+        <p class="gloss-meta">类比：<b>项目进度表上的里程碑</b>。</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="gloss-group" data-cat="files">
+    <h4>项目文件与开源：README、Markdown、License</h4>
+    <div class="gloss-grid">
+      <article class="gloss-card" data-search="readme 说明 说明书 自我介绍">
+        <div class="gloss-head"><span class="gloss-cn">README</span><span class="gloss-en">README</span></div>
+        <p>项目首页最显眼的"说明书"，介绍这个项目是干什么的、怎么安装、怎么用。打开仓库第一眼看到的就是它。</p>
+        <p class="gloss-meta">类比：<b>产品的说明书 + 门面</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="markdown md 排版 语法">
+        <div class="gloss-head"><span class="gloss-cn">Markdown</span><span class="gloss-en">Markdown</span></div>
+        <p>一种很简单的排版语言，用几个符号就能写出标题、列表、加粗、链接。README 就是用它写的。</p>
+        <p class="gloss-meta">类比：<b>用"快捷键"排版</b>，写完自动变漂亮。</p>
+      </article>
+      <article class="gloss-card" data-search="license 协议 开源协议 许可 版权">
+        <div class="gloss-head"><span class="gloss-cn">License（开源协议）</span><span class="gloss-en">License</span></div>
+        <p>一份说明别人"能用你的代码做什么、不能做什么"的文件。开源项目通常必须配一个。</p>
+        <p class="gloss-meta">类比：<b>贴在门口的"使用须知"</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="开源 open source 公开 共享">
+        <div class="gloss-head"><span class="gloss-cn">开源</span><span class="gloss-en">Open Source</span></div>
+        <p>代码公开，任何人都能看、能学、能改、能提建议，还能在其他项目里使用。</p>
+        <p class="gloss-meta">类比：<b>公开的菜谱</b>，谁都能学，还能改良后分享给别人。</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="gloss-group" data-cat="security">
+    <h4>连接与安全：SSH、HTTPS、Token、GPG</h4>
+    <div class="gloss-grid">
+      <article class="gloss-card" data-search="ssh 加密 钥匙 公钥 私钥">
+        <div class="gloss-head"><span class="gloss-cn">SSH</span><span class="gloss-en">SSH</span></div>
+        <p>一种加密的连接方式，用一对"钥匙"（公钥 + 私钥）安全地连接 GitHub。配一次，长期免输密码。</p>
+        <p class="gloss-meta">类比：<b>门禁卡（公钥）+ 钥匙（私钥）</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="https 网址 密码 token 登录">
+        <div class="gloss-head"><span class="gloss-cn">HTTPS</span><span class="gloss-en">HTTPS</span></div>
+        <p>通过网址地址（用用户名 + 令牌）连接 GitHub 的方式。地址以 https://github.com 开头。</p>
+        <p class="gloss-meta">类比：<b>用账号密码登录</b>的方式。</p>
+      </article>
+      <article class="gloss-card" data-search="token 令牌 访问令牌 密码 personal access token">
+        <div class="gloss-head"><span class="gloss-cn">Token（令牌）</span><span class="gloss-en">Personal Access Token</span></div>
+        <p>一串代替密码的专用字符串，用来访问你的 GitHub 账户，可以限定权限、随时撤销，比密码安全。</p>
+        <p class="gloss-meta">类比：<b>某个 App 的"专用临时密码"</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="gpg 签名 印章 身份">
+        <div class="gloss-head"><span class="gloss-cn">GPG</span><span class="gloss-en">GPG</span></div>
+        <p>给提交"签名"，证明"这确实是我提交的、没被篡改过"。进阶功能，新手了解即可。</p>
+        <p class="gloss-meta">类比：<b>在文件上盖一个专属电子印章</b>。</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="gloss-group" data-cat="basics">
+    <h4>电脑基础词：命令行、路径、目录、桌面</h4>
+    <div class="gloss-grid">
+      <article class="gloss-card" data-search="命令行 终端 黑窗口 terminal command line 命令">
+        <div class="gloss-head"><span class="gloss-cn">命令行 / 终端</span><span class="gloss-en">Terminal</span></div>
+        <p>一个黑底窗口，用打字的方式指挥电脑做事。Git 最常用的操作都是在这里输入命令完成的。</p>
+        <p class="gloss-meta">类比：<b>和电脑"打字对话"</b>，说一句它做一件。</p>
+      </article>
+      <article class="gloss-card" data-search="路径 path 地址">
+        <div class="gloss-head"><span class="gloss-cn">路径</span><span class="gloss-en">Path</span></div>
+        <p>文件在电脑里的"地址"，例如 C:\Users\你的名字\Desktop。命令里常用它定位文件在哪儿。</p>
+        <p class="gloss-meta">类比：<b>门牌号</b>，告诉电脑去哪个文件夹找人。</p>
+      </article>
+      <article class="gloss-card" data-search="目录 directory 文件夹">
+        <div class="gloss-head"><span class="gloss-cn">目录</span><span class="gloss-en">Directory</span></div>
+        <p>就是"文件夹"，存放文件和子文件夹的地方。命令行里"进入目录"就是"打开文件夹"。</p>
+        <p class="gloss-meta">类比：<b>书柜里的格子</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="桌面 desktop 主屏幕">
+        <div class="gloss-head"><span class="gloss-cn">桌面</span><span class="gloss-en">Desktop</span></div>
+        <p>电脑开机后看到的那个主屏幕，它本身也是一个文件夹（一般在 C:\Users\你的名字\Desktop）。</p>
+        <p class="gloss-meta">类比：<b>你的书桌桌面</b>，随手放东西的地方。</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="gloss-group" data-cat="advanced">
+    <h4>进阶小工具：.gitignore、Pages、Actions</h4>
+    <div class="gloss-grid">
+      <article class="gloss-card" data-search="gitignore 排除 忽略 名单">
+        <div class="gloss-head"><span class="gloss-cn">.gitignore</span><span class="gloss-en">.gitignore</span></div>
+        <p>一个"排除名单"文件，告诉 Git 哪些文件（比如临时文件、密码配置）不用管、不用上传。</p>
+        <p class="gloss-meta">类比：<b>打包时的"不用装的东西清单"</b>。</p>
+      </article>
+      <article class="gloss-card" data-search="pages 网页 托管 网站 静态">
+        <div class="gloss-head"><span class="gloss-cn">GitHub Pages</span><span class="gloss-en">GitHub Pages</span></div>
+        <p>GitHub 免费帮你托管静态网页，会生成一个公开网址，比如 你的用户名.github.io/项目名。</p>
+        <p class="gloss-meta">类比：<b>免费送你的"网站服务器"</b>，放个网页就能访问。</p>
+      </article>
+      <article class="gloss-card" data-search="actions 自动化 机器人 流水线 CI">
+        <div class="gloss-head"><span class="gloss-cn">Actions</span><span class="gloss-en">Actions</span></div>
+        <p>项目里的自动化流程，比如每次提交代码后自动跑测试、自动发布。新手了解即可，以后慢慢玩。</p>
+        <p class="gloss-meta">类比：<b>自动流水线 / 定时机器人</b>。</p>
+      </article>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section class="chapter" id="chap2">
+  <div class="chapter-head"><span class="chapter-no">第二章</span><h2>注册 GitHub 账号，并认识它的界面</h2></div>
+  <p class="lead">这一章全程在浏览器里操作，不用碰代码，先混个脸熟。</p>
+
+  <h3>2.1 注册账号</h3>
+  <ol class="steps">
+    <li>
+      <strong>打开 GitHub 官方网站</strong>
+      <p>在浏览器地址栏输入 <code>github.com</code> 并回车。看到页面右上角有一个 <strong>Sign up</strong>（注册）按钮，点击它。</p>
+    </li>
+    <li>
+      <strong>填写邮箱、密码、用户名</strong>
+      <p>按页面提示依次填：</p>
+      <ul class="plain">
+        <li><b class="k">Email</b>：填你常用的邮箱（QQ 邮箱、163、Gmail 都行），后面要收验证邮件。</li>
+        <li><b class="k">Password</b>：设置密码。GitHub 要求至少 8 位，并且要包含字母和数字。</li>
+        <li><b class="k">Username</b>：这是你的"网名"，会出现在你的个人主页地址里，例如 <code>github.com/你的用户名</code>。建议用简短、好记的英文（比如名字拼音）。想好再填，虽然之后能改，但改起来麻烦。</li>
+      </ul>
+      <p>中间可能让你完成一个简单的拼图验证，照着做就行。填完点 <strong>Create account</strong>。</p>
+    </li>
+    <li>
+      <strong>去邮箱点验证链接</strong>
+      <p>GitHub 会给你刚填的邮箱发一封验证邮件。登录邮箱，找到它，点里面的 <strong>Verify email address</strong> 按钮。回到 GitHub 网页，可能让你再输入一次邮箱确认。</p>
+    </li>
+    <li>
+      <strong>登录成功，进入"首页仪表盘"</strong>
+      <p>登录后你会看到一个面板（Dashboard）。先别急，我们先认识它。上面一行是导航，重点记住几个：</p>
+      <ul class="plain">
+        <li><b class="k">＋ 号</b>（右上角）：用来创建新仓库、新东西，后面经常用。</li>
+        <li><b class="k">铃铛</b>：通知中心，别人 @ 你或提到你的项目时会响。</li>
+        <li><b class="k">头像</b>：你的账户菜单，点开后里面有 <strong>Settings（设置）</strong>，配 SSH 时要用。</li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="box note">
+    <span class="bt">💡 用户名很重要</span>
+    你的开源项目地址会变成 <code>github.com/你的用户名/项目名</code>。用户名是你在 GitHub 世界的"门牌号"，选一个愿意长期用的。
+  </div>
+
+  <h3>2.2 认识仓库页面</h3>
+  <p>在 GitHub 里，几乎所有工作都发生在一个个"仓库"页面里。打开任意一个仓库（比如点你自己的头像进入主页，再点你的项目），从上到下认识这些区域：</p>
+  <ul class="plain">
+    <li><b class="k">代码区（Code）</b>：仓库默认显示的就是这个页签，里面列出所有文件和文件夹，点开可以看代码内容。</li>
+    <li><b class="k">README</b>：如果项目根目录有 README 文件，会在文件列表下方直接渲染出来，是项目的"门面"。第一章讲过，还记得吗？</li>
+    <li><b class="k">Issues</b>：问题区，报 bug、提需求的地方。</li>
+    <li><b class="k">Pull requests</b>：合并申请区，协作的关键。</li>
+    <li><b class="k">Actions</b>：自动化流程区。</li>
+    <li><b class="k">Settings</b>：设置区，改仓库名字、删仓库、配 GitHub Pages 都在这里。</li>
+    <li><b class="k">Code（绿色按钮）</b>：在文件列表右上角，点开可以复制仓库地址（clone 时要用）。</li>
+  </ul>
+
+  <div class="box warn">
+    <span class="bt">⚠️ 常见混淆</span>
+    有人以为"仓库"就是"项目"，其实差不多，但仓库 = 项目 + 完整修改历史。别人 Star 你的仓库，等于给"你的项目"点赞。
+  </div>
+
+  <h3>2.3 动手：创建你的第一个仓库（现在就可以做）</h3>
+  <ol class="steps">
+    <li>
+      <strong>点右上角的 ＋ 号 → New repository（新建仓库）</strong>
+    </li>
+    <li>
+      <strong>填仓库名字</strong>
+      <p>Repository name 填一个英文名，例如 <code>hello-world</code>。可以加一句 Description（简介），不填也行。</p>
+    </li>
+    <li>
+      <strong>选择公开还是私有</strong>
+      <p><b class="k">Public（公开）</b>：所有人都能看到——做开源项目选它。<b class="k">Private（私有）</b>：只有你和邀请的人能看到。练习时选哪个都行。</p>
+    </li>
+    <li>
+      <strong>勾选 Add a README file</strong>
+      <p>勾上它，GitHub 会自动帮你生成一个说明文件，仓库就不会是空的。然后点 <strong>Create repository</strong>。</p>
+    </li>
+  </ol>
+  <p>恭喜！你有了人生第一个 GitHub 仓库。记住它的地址（<code>github.com/你的用户名/hello-world</code>），后面几章都会用到。</p>
+</section>
+
+<section class="chapter" id="chap3">
+  <div class="chapter-head"><span class="chapter-no">第三章</span><h2>在 Windows 上安装并配置 Git</h2></div>
+  <p class="lead">第二章我们在网站上注册了"云端仓库"，这一章在你自己电脑上安装"本地引擎"——Git。全程傻瓜式下一步，别怕。</p>
+
+  <h3>3.1 下载并安装 Git</h3>
+  <ol class="steps">
+    <li>
+      <strong>打开下载页</strong>
+      <p>浏览器打开 Git 官方下载页：<a href="https://git-scm.com/download/win" target="_blank" rel="noopener noreferrer">git-scm.com/download/win</a>。一般会自动识别你的系统，看到 <strong>64-bit Git for Windows Setup</strong> 就点它下载（现在电脑基本都是 64 位）。</p>
+    </li>
+    <li>
+      <strong>双击安装包，一路"下一步"</strong>
+      <p>双击下载好的 .exe 文件。安装向导里大部分选项保持默认即可，一直点 <strong>Next / 下一步</strong>。特别注意：安装类型页面选择 <strong>Git Bash Here</strong>（默认已勾选），这个我们后面天天用。到 "Choosing the default editor" 时保持默认的 Vim 就行（不会用到它）。最后点 <strong>Install</strong>，等待安装完成。</p>
+    </li>
+    <li>
+      <strong>打开 Git Bash</strong>
+      <p>安装完成后，在任意文件夹里点<strong>鼠标右键</strong>，菜单里会出现 <strong>Git Bash Here</strong>，点它，就会打开一个"黑窗口"。或者去开始菜单搜索 <strong>Git Bash</strong> 打开。这个黑窗口就是我们输入命令的地方。</p>
+    </li>
+    <li>
+      <strong>检查安装是否成功</strong>
+      <p>在黑窗口里输入下面这行命令，然后按回车：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>Git Bash 黑窗口</figcaption>
+        <pre><code><span class="p">$</span> git --version</code></pre>
+      </figure>
+      <p>如果看到类似 <code>git version 2.x.x.windows.1</code> 的一行字，说明安装成功！如果提示"不是内部或外部命令"或 <code>command not found</code>，先别慌，跳到最后第九章第 2 个问题照着解决。</p>
+    </li>
+  </ol>
+
+  <div class="box info">
+    <span class="bt">📌 Git Bash 是什么？</span>
+    它是装 Git 时一起装进来的"黑窗口"，专门用来输入 Git 命令，比系统自带的"命令提示符（CMD）"更好用。以后教程里说"在 Git Bash 里输入"，指的就是它。
+  </div>
+
+  <h3>3.2 告诉 Git"你是谁"（一次性设置）</h3>
+  <p>Git 每次"存档"都要记录"是谁存的"，这样 GitHub 上才能显示你的名字。所以先做一次全局设置：</p>
+  <ol class="steps">
+    <li>
+      <strong>设置你的名字</strong>
+      <p>在 Git Bash 里输入（把"你的昵称"换成你的英文昵称，最好和 GitHub 用户名一致）：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>Git Bash 黑窗口</figcaption>
+        <pre><code><span class="p">$</span> git config --global user.name "你的昵称"</code></pre>
+      </figure>
+      <p>按回车后没有任何提示是正常的，说明"没报错就是成功"。</p>
+    </li>
+    <li>
+      <strong>设置你的邮箱</strong>
+      <p><b class="k">注意：必须填你注册 GitHub 时用的那个邮箱</b>，这样你的提交才能关联到你的 GitHub 账号：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>Git Bash 黑窗口</figcaption>
+        <pre><code><span class="p">$</span> git config --global user.email "你的邮箱@example.com"</code></pre>
+      </figure>
+    </li>
+    <li>
+      <strong>检查设置是否成功</strong>
+      <p>输入下面命令，能看到你刚才设置的名字和邮箱就对了：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>Git Bash 黑窗口</figcaption>
+        <pre><code><span class="p">$</span> git config --list</code></pre>
+      </figure>
+    </li>
+  </ol>
+
+  <div class="box note">
+    <span class="bt">💡 为什么邮箱必须一致？</span>
+    Git 用"名字 + 邮箱"来认人。如果邮箱和你 GitHub 注册的不一样，你的提交会显示成"另一个陌生人"，你的开源贡献图就长不出小方块了。这一点很多新手都踩过坑。
+  </div>
+
+  <div class="box warn">
+    <span class="bt">⚠️ 名字或邮箱打错了怎么办？</span>
+    重新执行一遍上面第 1、2 步命令就行，后设的会覆盖先设的。不用卸载重装。
+  </div>
+</section>
+
+<section class="chapter" id="chap4">
+  <div class="chapter-head"><span class="chapter-no">第四章</span><h2>本地 Git 入门：init / add / commit 学会"存档"</h2></div>
+  <p class="lead">这一章先<strong>不联网</strong>，全在你电脑上练习。目标只有一个：把"改文件 → 装箱（add）→ 存档（commit）"这套动作练熟。练熟了，后面所有章节都不难。</p>
+
+  <h3>4.1 准备一个练习文件夹</h3>
+  <ol class="steps">
+    <li>
+      <strong>在桌面新建一个文件夹，命名 project</strong>
+      <p>右键桌面 → 新建 → 文件夹 → 名字改成 <code>project</code>（用英文名，避免以后某些命令的麻烦）。</p>
+    </li>
+    <li>
+      <strong>在这个文件夹里打开 Git Bash</strong>
+      <p>进入 project 文件夹，在<strong>文件夹内部空白处点右键</strong>，选 <strong>Git Bash Here</strong>。这样黑窗口的"当前位置"就是这个文件夹。</p>
+      <p>验证一下当前位置：输入 <code>pwd</code> 回车，会显示当前路径，最后应该能看到 <code>.../Desktop/project</code> 之类。这说明你"站在"这个文件夹里。</p>
+    </li>
+  </ol>
+
+  <div class="box info">
+    <span class="bt">📌 为什么要在文件夹里右键打开？</span>
+    因为 Git 命令默认对"当前所在的文件夹"生效。在哪个文件夹打开 Git Bash，命令就作用在哪个文件夹。这是新手最容易搞混的一点——<strong>先看路径，再敲命令</strong>。
+  </div>
+
+  <h3>4.2 把文件夹变成"仓库"：git init</h3>
+  <p>普通文件夹只是"装文件的盒子"，要变成"带时间机的仓库"，需要初始化：</p>
+  <figure class="cmd">
+    <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash</figcaption>
+    <pre><code><span class="p">$</span> git init</code></pre>
+  </figure>
+  <p>你会看到类似：</p>
+  <pre class="out"><code>Initialized empty Git repository in C:/Users/你的名字/Desktop/project/.git/</code></pre>
+  <p><b class="k">为什么这么做：</b><code>init</code> 是 initialize（初始化）的缩写，作用是给这个文件夹装上"时间机"。从这一刻起，这个文件夹就成了一个 Git 仓库。</p>
+  <p><b class="k">会看到什么：</b>初始化成功后，文件夹里会出现一个隐藏的 <code>.git</code> 文件夹（如果看不到，是因为系统默认隐藏了以点开头的文件）。<strong>千万别删它</strong>，它是整个时间机的主体，删了历史就全没了。</p>
+
+  <h3>4.3 创建第一个文件</h3>
+  <ol class="steps">
+    <li>
+      <strong>在 project 文件夹里新建一个文件 README.md</strong>
+      <p>用记事本（或任何文本编辑器）新建一个文件，名字叫 <code>README.md</code>，内容写一行：<code>你好，这是我的第一个项目</code>，然后保存。注意文件名是 README.md，不是 README.md.txt。</p>
+      <p>也可以用命令一行搞定（可选）：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash</figcaption>
+        <pre><code><span class="p">$</span> echo 你好，这是我的第一个项目 &gt; README.md</code></pre>
+      </figure>
+    </li>
+    <li>
+      <strong>查看状态：git status</strong>
+      <p>输入：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash</figcaption>
+        <pre><code><span class="p">$</span> git status</code></pre>
+      </figure>
+      <p>你会看到类似：</p>
+      <pre class="out"><code>Untracked files:
+  README.md</code></pre>
+      <p><b class="k">会看到什么：</b><code>Untracked</code> 意思是"未跟踪"——Git 知道有这文件了，但还没把它纳入管理。红色或未跟踪状态 = 还没登记进档案。</p>
+      <p><b class="k">为什么这么做：</b><code>git status</code> 是最常用的命令，随时查看"现在改了什么、还差什么"，可以当"进度表"反复用。</p>
+    </li>
+    <li>
+      <strong>把文件装进行李箱：git add</strong>
+      <p>输入：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash</figcaption>
+        <pre><code><span class="p">$</span> git add README.md</code></pre>
+      </figure>
+      <p>再执行 <code>git status</code>，会看到 README.md 变成了"绿色"，上方写着 <code>Changes to be committed</code>（待提交的改动）。意思是：文件已经被装进了"待存档行李箱"。</p>
+      <p><b class="k">小技巧：</b>如果改动文件很多，可以用 <code>git add .</code>（点号 = 当前文件夹里所有改动），一次全装进去。</p>
+    </li>
+    <li>
+      <strong>存档：git commit</strong>
+      <p>输入（引号里的文字随便写，但要说清楚这次改了什么）：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash</figcaption>
+        <pre><code><span class="p">$</span> git commit -m "第一次提交"</code></pre>
+      </figure>
+      <p>你会看到类似：</p>
+      <pre class="out"><code>[main (root-commit) 3f2a9c1] 第一次提交
+ 1 file changed, 1 insertion(+)</code></pre>
+      <p><b class="k">为什么这么做：</b><code>commit</code> = 提交/存档。<code>-m</code> 后面跟的是这条存档的"说明文字"（提交信息），一定用双引号包起来。</p>
+      <p><b class="k">会看到什么：</b>绿色说明文字 + 一串乱码一样的字符（那是这次提交的唯一编号，叫提交 ID）。这一刻，你的"第一次存档"完成了！</p>
+    </li>
+    <li>
+      <strong>看存档历史：git log</strong>
+      <p>输入：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash</figcaption>
+        <pre><code><span class="p">$</span> git log</code></pre>
+      </figure>
+      <p>你会看到这条提交的完整记录：提交编号、作者（你的名字）、时间、提交说明。这就是你的"存档列表"。</p>
+    </li>
+  </ol>
+
+  <div class="box note">
+    <span class="bt">💡 黄金三连，请背下来</span>
+    <strong>改文件 → git add（装箱）→ git commit（存档）</strong>。以后你在 GitHub 上做的每一次操作，都逃不出这三步。现在去把 README.md 再改一行字，重新 add + commit 一遍，体会"存档"的感觉。
+  </div>
+
+  <h3>4.4 用 VS Code 的图形界面代替命令行（可选，更适合新手）</h3>
+  <p>如果觉得黑窗口有压力，推荐用 <strong>VS Code</strong>（免费编辑器，写 Python 也用它）里的图形界面操作，效果完全一样：</p>
+  <ol class="steps">
+    <li>
+      <strong>下载并打开 VS Code</strong>
+      <p>官网下载：<a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">code.visualstudio.com</a>，安装后用"文件 → 打开文件夹"打开 project 文件夹。</p>
+    </li>
+    <li>
+      <strong>找到"源代码管理"面板</strong>
+      <p>看左侧竖排图标，第三个像"三叉树/分叉"的图标就是（名称：源代码管理，英文 Source Control）。点它，能看到所有改动文件。</p>
+    </li>
+    <li>
+      <strong>暂存并提交</strong>
+      <p>文件后面有个 <strong>＋</strong> 号，点它 = add（装箱）；再在顶部输入框写提交说明，点最上面的 <strong>对勾</strong> 按钮 = commit（存档）。</p>
+    </li>
+  </ol>
+  <div class="box info">
+    <span class="bt">📌 命令行和图形界面二选一即可</span>
+    后面的教程以命令行（Git Bash）为主，因为它到哪里都通用，也方便复制命令。但如果你更适应 VS Code 图形界面，完全可以平行使用，效果一样。
+  </div>
+
+  <div class="box danger">
+    <span class="bt">🚨 新人最容易犯的错</span>
+    改了文件却忘了 <code>git add</code> 就直接 <code>git commit</code>。结果是"什么都没存上"。记住：<strong>add 是装箱，commit 是托运，顺序不能乱</strong>。忘了就随时 <code>git status</code> 看看自己到哪一步了。
+  </div>
+</section>
+
+<section class="chapter" id="chap5">
+  <div class="chapter-head"><span class="chapter-no">第五章</span><h2>连接远程仓库：SSH、clone、push、pull</h2></div>
+  <p class="lead">第四章我们把本地"存档"练熟了，这一章把本地和 GitHub 网站连起来，实现真正的"上传（push）"和"下载（pull）"。核心是先配置一把 SSH"钥匙"。</p>
+
+  <h3>5.1 在 GitHub 上建一个空仓库</h3>
+  <ol class="steps">
+    <li>
+      <strong>点 ＋ → New repository</strong>
+      <p>仓库名字填 <code>project</code>（和你本地文件夹同名，好记）。<b class="k">这次不要勾 README</b>（因为本地已经有内容了，避免以后合并冲突）。点 Create repository。</p>
+    </li>
+    <li>
+      <strong>记住仓库的 SSH 地址</strong>
+      <p>创建成功后，页面会显示 <code>git remote add origin git@github.com:你的用户名/project.git</code> 这样的提示。记下 <code>git@github.com:...</code> 开头的这段地址，这就是你仓库的 SSH 地址（像"云端地址+门禁"）。</p>
+    </li>
+  </ol>
+
+  <div class="box info">
+    <span class="bt">📌 SSH 和 HTTPS 地址怎么选？</span>
+    SSH 地址形如 <code>git@github.com:用户名/项目.git</code>，配好钥匙后一直免输密码，教程推荐用它。HTTPS 地址形如 <code>https://github.com/用户名/项目.git</code>，每次要用用户名+令牌，麻烦一点。新手统一用 SSH。
+  </div>
+
+  <h3>5.2 配置 SSH：给你的电脑配一把"钥匙"</h3>
+  <p>SSH 的原理可以这样理解：你电脑生成一对钥匙——一把<strong>公钥</strong>（可以公开，贴在 GitHub 上，像"门禁卡"），一把<strong>私钥</strong>（自己保管，像"钥匙"）。配对成功，GitHub 就认你这台电脑。</p>
+  <ol class="steps">
+    <li>
+      <strong>生成钥匙对</strong>
+      <p>打开 Git Bash，输入（邮箱用你注册 GitHub 的那个）：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>Git Bash 黑窗口（任意位置）</figcaption>
+        <pre><code><span class="p">$</span> ssh-keygen -t ed25519 -C "你的邮箱@example.com"</code></pre>
+      </figure>
+      <p>接下来会连续问几个问题，<strong>全部直接按回车</strong>（接受默认保存位置、不设密码）即可。等它生成完。</p>
+    </li>
+    <li>
+      <strong>读取并复制公钥</strong>
+      <p>输入下面命令（pwd 不用管），会显示一串以 <code>ssh-ed25519</code> 开头的文字，那就是公钥：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>Git Bash 黑窗口</figcaption>
+        <pre><code><span class="p">$</span> cat ~/.ssh/id_ed25519.pub</code></pre>
+      </figure>
+      <p>把显示出来的<strong>整行全部复制</strong>（包括开头结尾，一个字符都别漏）。</p>
+    </li>
+    <li>
+      <strong>把公钥贴到 GitHub</strong>
+      <p>浏览器打开 GitHub → 点右上角<strong>头像</strong> → <strong>Settings（设置）</strong> → 左侧 <strong>SSH and GPG keys</strong> → 点 <strong>New SSH key</strong>。</p>
+      <p>Title 随便填，比如"我的电脑"；Key 的大框里粘贴刚才复制的公钥 → 点 <strong>Add SSH key</strong>。完成！</p>
+    </li>
+    <li>
+      <strong>测试连接</strong>
+      <p>回到 Git Bash，输入：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>Git Bash 黑窗口</figcaption>
+        <pre><code><span class="p">$</span> ssh -T git@github.com</code></pre>
+      </figure>
+      <p>第一次会问 <code>Are you sure you want to continue connecting</code>，输入 <code>yes</code> 回车。如果看到类似：</p>
+      <pre class="out"><code>Hi 你的用户名! You've successfully authenticated, but GitHub does not provide shell access.</code></pre>
+      <p>说明钥匙配好了，GitHub 已经认你这台电脑了！</p>
+    </li>
+  </ol>
+
+  <div class="box danger">
+    <span class="bt">🚨 如果看到 Permission denied (publickey)</span>
+    说明钥匙没配对好。别慌，直接跳到第九章第 4 个问题照着排查。最常见原因是：公钥没复制完整，或粘贴时多了空格。
+  </div>
+
+  <h3>5.3 把本地仓库关联到远程：git remote</h3>
+  <ol class="steps">
+    <li>
+      <strong>在 project 文件夹打开 Git Bash</strong>
+      <p>右键 project 文件夹 → Git Bash Here。</p>
+    </li>
+    <li>
+      <strong>添加远程地址</strong>
+      <p>输入（把地址换成你自己的）：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash</figcaption>
+        <pre><code><span class="p">$</span> git remote add origin git@github.com:你的用户名/project.git</code></pre>
+      </figure>
+      <p><b class="k">为什么这么做：</b><code>remote</code> 是"远程仓库"的意思；<code>origin</code> 是给这个远程地址起的<strong>小名</strong>（GitHub 的约定俗称，就叫 origin），以后用 origin 就代表这个地址。没报错就是成功。</p>
+    </li>
+    <li>
+      <strong>查看已关联的地址</strong>
+      <p>输入 <code>git remote -v</code>，能看到 origin 对应的地址，说明关联成功。</p>
+    </li>
+  </ol>
+
+  <h3>5.4 上传：git push</h3>
+  <figure class="cmd">
+    <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash</figcaption>
+    <pre><code><span class="p">$</span> git push -u origin main</code></pre>
+  </figure>
+  <p><b class="k">为什么这么做：</b>把本地 <code>main</code> 分支的所有存档，推送到名为 <code>origin</code> 的远程仓库。<code>-u</code> 的意思是"记住这个关联"，以后直接敲 <code>git push</code> 就行。</p>
+  <p><b class="k">会看到什么：</b>第一次可能会问你是否继续连接，输入 <code>yes</code>。然后看到一堆 "Writing objects..." 的进度，最后出现类似：</p>
+  <pre class="out"><code>To github.com:你的用户名/project.git
+ * [new branch]      main -&gt; main</code></pre>
+  <p>刷新一下 GitHub 仓库页面，你会发现 README.md 出现在网上了！这就是"把电脑里的东西传到网盘"。</p>
+
+  <h3>5.5 下载：git clone 和 git pull</h3>
+  <ol class="steps">
+    <li>
+      <strong>克隆：把项目整套拿到电脑</strong>
+      <p>想从 GitHub 把一个项目复制到自己电脑，在 Git Bash 里输入：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>想放项目的文件夹里的 Git Bash</figcaption>
+        <pre><code><span class="p">$</span> git clone git@github.com:你的用户名/project.git</code></pre>
+      </figure>
+      <p>会在当前文件夹里新建一个同名文件夹，里面是完整的项目（含全部历史）。类比：把网盘文件夹整个复制到电脑。</p>
+    </li>
+    <li>
+      <strong>拉取：同步远程的最新改动</strong>
+      <p>当别人（或你另一台电脑）更新了远程仓库，你想把最新改动拉到本地：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>本地项目文件夹里的 Git Bash</figcaption>
+        <pre><code><span class="p">$</span> git pull</code></pre>
+      </figure>
+      <p>如果看到 <code>Already up to date</code>，说明本地已经是最新的；如果看到文件更新提示，说明同步成功了。</p>
+    </li>
+  </ol>
+
+  <div class="box note">
+    <span class="bt">💡 一句话记牢 push / pull / clone</span>
+    <strong>push = 上传</strong>（本地 → 远程），<strong>pull = 下载</strong>（远程 → 本地），<strong>clone = 整套复制</strong>（第一次拿项目用），<strong>remote = 地址簿</strong>（记录远程地址）。
+  </div>
+</section>
+
+<section class="chapter" id="chap6">
+  <div class="chapter-head"><span class="chapter-no">第六章</span><h2>分支与协作：branch、merge、Pull Request</h2></div>
+  <p class="lead">这一章是 Git 最精彩的部分：学会开"平行宇宙"（分支），再学会把平行宇宙合回主线（合并），最后掌握团队协作的标准流程（Pull Request）。</p>
+
+  <h3>6.1 什么是分支（复习 + 深入）</h3>
+  <p>第一章讲过：分支 = 从主线复制出来的<strong>独立工作区</strong>，在里面随便改都不影响主线。这样你可以放心大胆地做实验：新功能写好了，合并回主线；写砸了，直接删掉，主线毫发无伤。</p>
+  <div class="box info">
+    <span class="bt">📌 分支类比</span>
+    主线 main 是"正式出版的定稿"，分支是"草稿本/平行宇宙"。你在草稿本上随便写、随便改，改满意了再誊写（merge）进正式本。
+  </div>
+
+  <h3>6.2 分支基本操作</h3>
+  <ol class="steps">
+    <li>
+      <strong>查看当前分支</strong>
+      <p>在 project 文件夹的 Git Bash 里输入：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash</figcaption>
+        <pre><code><span class="p">$</span> git branch</code></pre>
+      </figure>
+      <p>会列出所有分支，<code>*</code> 号（星号）所在的那行，就是<strong>你当前所在</strong>的分支。刚初始化的仓库通常只有一个 main。</p>
+    </li>
+    <li>
+      <strong>创建并切换到新分支</strong>
+      <p>输入（dev 是分支名，可以随便起，但建议有含义）：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash</figcaption>
+        <pre><code><span class="p">$</span> git checkout -b dev</code></pre>
+      </figure>
+      <p>会看到 <code>Switched to a new branch 'dev'</code>。这条命令是"创建 dev 分支 + 直接切过去"一步到位。<code>-b</code> 就是 branch（分支）的缩写。</p>
+    </li>
+    <li>
+      <strong>在分支上干活</strong>
+      <p>把 README.md 加上一行字，然后 add + commit（还记得黄金三连吗？）。再用 <code>git log</code> 能看到新的提交。</p>
+    </li>
+    <li>
+      <strong>切回主线，看看平行宇宙的区别</strong>
+      <p>输入 <code>git checkout main</code> 切回主线，再 <code>git log</code>——你会发现 dev 上的提交在 main 上<strong>看不到</strong>。这就是"平行宇宙"：两边各自独立，互不影响。</p>
+    </li>
+  </ol>
+
+  <h3>6.3 合并分支：git merge</h3>
+  <ol class="steps">
+    <li>
+      <strong>回到要"接收改动"的分支</strong>
+      <p>先切回 main：<code>git checkout main</code>（合并动作会发生在当前所在的分支上）。</p>
+    </li>
+    <li>
+      <strong>执行合并</strong>
+      <p>输入：</p>
+      <figure class="cmd">
+        <figcaption><span class="where">📌 在哪里输入：</span>project 文件夹里的 Git Bash（main 分支上）</figcaption>
+        <pre><code><span class="p">$</span> git merge dev</code></pre>
+      </figure>
+      <p>会看到 <code>Fast-forward</code>（快进）或 <code>Merge made by ...</code> 之类的提示，说明 dev 的改动成功合进了 main。现在 <code>git log</code> 能看到 dev 的提交了。</p>
+    </li>
+    <li>
+      <strong>清理分支（可选）</strong>
+      <p>分支用完可以删掉：<code>git branch -d dev</code>。</p>
+    </li>
+  </ol>
+
+  <h3>6.4 冲突 Conflict：必经之路，别怕</h3>
+  <p>如果两个分支改了<strong>同一处</strong>内容，Git 就不知道听谁的，会停下来让你"拍板"，这就是冲突。它是正常机制，不是错误。</p>
+  <ol class="steps">
+    <li>
+      <strong>制造一次冲突</strong>
+      <p>在 main 上把 README.md 某一行改成 A 内容并提交；再开分支改<strong>同一行</strong>为 B 内容并提交；切回 main 合并——Git 会提示 <code>CONFLICT</code>，并告诉你是哪个文件冲突。</p>
+    </li>
+    <li>
+      <strong>打开冲突文件，你会看到这样的标记</strong>
+      <p>用编辑器打开冲突文件，会看到三块：</p>
+      <pre class="out"><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+主线里的内容（我本地的）
+=======
+分支里的内容（dev 带过来的）
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; dev</code></pre>
+      <p>意思是：<code>&lt;&lt;&lt;&lt;&lt;</code> 到 <code>=======</code> 是"本地"的内容，<code>=======</code> 到 <code>&gt;&gt;&gt;&gt;&gt;</code> 是"对方"的内容。</p>
+    </li>
+    <li>
+      <strong>手动解决：保留你想要的，删掉其他</strong>
+      <p>删掉不要的内容，保留想要的，并且<strong>把那些 <code>&lt;&lt;&lt;&lt;&lt;</code>、<code>=======</code>、<code>&gt;&gt;&gt;&gt;&gt;</code> 标记行全部删掉</strong>，只留下最终结果。</p>
+    </li>
+    <li>
+      <strong>重新 add + commit，完成合并</strong>
+      <p><code>git add 冲突文件名</code> → <code>git commit -m "解决冲突"</code>。搞定！冲突解决完毕。</p>
+    </li>
+  </ol>
+  <div class="box note">
+    <span class="bt">💡 遇到冲突的心态</span>
+    冲突 ≠ 你错了，而是"两个人同时改了同一处，需要一个人做决定"。绝大多数冲突几秒钟就能解决。记住流程：<strong>看标记 → 删多余 → add → commit</strong>。
+  </div>
+
+  <h3>6.5 团队协作的标准流程：Pull Request（PR）</h3>
+  <p>在真实团队里，大家不会直接在 main 上乱改，而是走"分支 + PR"流程：</p>
+  <ol class="steps">
+    <li>
+      <strong>开一个分支做你的改动</strong>
+      <p><code>git checkout -b feature-新功能名</code>，然后正常改、add、commit。</p>
+    </li>
+    <li>
+      <strong>把分支推送到远程</strong>
+      <p><code>git push -u origin feature-新功能名</code>。</p>
+    </li>
+    <li>
+      <strong>去 GitHub 页面发起 PR</strong>
+      <p>打开仓库页面，会看到一个黄色提示条 <strong>Compare &amp; pull request</strong>，点它。填写 PR 标题和说明（做了什么、为什么），点 <strong>Create pull request</strong>。</p>
+      <p>PR 相当于"交作业申请"：你说"请把我这个分支合并进主线"。</p>
+    </li>
+    <li>
+      <strong>负责人（或你自己）审核并合并</strong>
+      <p>在 PR 页面点 <strong>Merge pull request</strong> → 确认 <strong>Confirm merge</strong>。合并成功后，可以点 <strong>Delete branch</strong> 把远程分支删掉。</p>
+    </li>
+  </ol>
+  <div class="box info">
+    <span class="bt">📌 PR = 交作业，Merge = 老师批改通过</span>
+    在 GitHub 上，"Pull Request（拉取请求）"虽然名字带 Pull，但本质是"申请把你的改动合并进去"。团队协作时，代码先经过 PR 审核，再合入主线，这样安全又清晰。
+  </div>
+</section>
+
+<section class="chapter" id="chap7">
+  <div class="chapter-head"><span class="chapter-no">第七章</span><h2>Fork 和参与他人项目</h2></div>
+  <p class="lead">你学 Python 的目标是做开源项目，而参与开源的第一步，往往就是先"加入别人的项目"。这一章教你用 Fork + Pull Request 参与任何公开项目。</p>
+
+  <h3>7.1 什么是 Fork（回顾）</h3>
+  <p>Fork = 把别人的仓库<strong>整个复制一份到你自己名下</strong>，变成"你的副本"。你可以在副本里随便改，完全不影响原作者的项目。</p>
+  <div class="box info">
+    <span class="bt">📌 类比</span>
+    就像把别人家的<strong>菜谱整本抄一份带回家</strong>，在家随便改良；如果你觉得改良很好，就把改动"送回去"（发 PR），原作者可以选择接受。
+  </div>
+
+  <h3>7.2 Fork 一个项目</h3>
+  <ol class="steps">
+    <li>
+      <strong>找一个你想参与的开源项目</strong>
+      <p>可以在 GitHub 首页搜索框里搜关键词，比如 "python tutorial" 或 "hello world"。找那种有 README、活跃度还不错的项目。</p>
+    </li>
+    <li>
+      <strong>点右上角的 Fork 按钮</strong>
+      <p>在项目页面右上角，会看到 <strong>Fork</strong> 按钮，旁边有个数字（表示被 Fork 了多少次）。点它，确认 Fork 到你的账号，稍等片刻。</p>
+    </li>
+    <li>
+      <strong>看效果</strong>
+      <p>刷新后，你会发现你的账号下多了一个同名仓库。它现在是<strong>你的</strong>了，随便改。</p>
+    </li>
+  </ol>
+
+  <h3>7.3 克隆你的 Fork 到本地</h3>
+  <p>注意：要 clone 的是<strong>你自己名下</strong>的那个仓库，不是原作者的：</p>
+  <figure class="cmd">
+    <figcaption><span class="where">📌 在哪里输入：</span>想放代码的文件夹里的 Git Bash</figcaption>
+    <pre><code><span class="p">$</span> git clone git@github.com:你的用户名/项目名.git</code></pre>
+  </figure>
+
+  <h3>7.4 改代码，推送到你自己的 Fork</h3>
+  <ol class="steps">
+    <li>
+      <strong>开分支（好习惯）</strong>
+      <p>进入项目文件夹，开一个分支：<code>git checkout -b my-fix</code>。</p>
+    </li>
+    <li>
+      <strong>修改并提交</strong>
+      <p>正常改 → <code>git add</code> → <code>git commit -m "修复了XX问题"</code>。</p>
+    </li>
+    <li>
+      <strong>推送到你的 Fork</strong>
+      <p><code>git push -u origin my-fix</code>。现在你的 Fork 上有这个分支了。</p>
+    </li>
+  </ol>
+
+  <h3>7.5 发起 Pull Request 回原项目</h3>
+  <ol class="steps">
+    <li>
+      <strong>在你的 Fork 页面点 Pull requests → New pull request</strong>
+      <p>GitHub 会显示你的 fork 与原项目的差异。</p>
+    </li>
+    <li>
+      <strong>确认合并方向</strong>
+      <p>确认是"从你的 fork 的分支 → 原项目的主分支"，一般会自动选好。如果不对，点 base 和 compare 调整。</p>
+    </li>
+    <li>
+      <strong>写清楚说明，创建 PR</strong>
+      <p>标题概括改动，说明里写"我改了什么、为什么、怎么验证"。然后点 <strong>Create pull request</strong>。</p>
+    </li>
+    <li>
+      <strong>等待维护者审核</strong>
+      <p>原项目的维护者会看到你的 PR，可能直接合并，也可能让你修改（你推送新提交到同一分支，PR 会自动更新）。</p>
+    </li>
+  </ol>
+
+  <div class="box warn">
+    <span class="bt">⚠️ 保持你的 Fork 和原项目同步（进阶，了解即可）</span>
+    原作者不断更新项目时，你的 Fork 会"落后"。想让自己的 Fork 跟上：在 GitHub 你的 Fork 页面点 <strong>Sync fork</strong> / <strong>Fetch upstream</strong>。或者在本地把原项目加为"上游"：<code>git remote add upstream 原项目地址</code>，之后 <code>git pull upstream main</code> 就能同步原项目的新改动。
+  </div>
+
+  <h3>7.6 开源贡献礼仪（小白也能做好）</h3>
+  <ul class="plain">
+    <li><b class="k">先读 README 和 CONTRIBUTING</b>：很多项目专门写了"贡献指南"，先读再动手，事半功倍。</li>
+    <li><b class="k">从简单的 Issue 开始</b>：找带 <code>good first issue</code>（新手友好）标签的问题，从修文档错字、补注释这类小事练手。</li>
+    <li><b class="k">改动小而清晰</b>：一个 PR 只做一件事，说明写清楚，维护者更愿意通过。</li>
+    <li><b class="k">沟通要礼貌</b>：用项目使用的语言（多数是英文），先说"你好"，问题描述清楚。</li>
+    <li><b class="k">心态放平</b>：贡献的本质是"学习 + 利他"，被拒绝也很正常，收到反馈本身就是收获。</li>
+  </ul>
+</section>
+
+<section class="chapter" id="chap8">
+  <div class="chapter-head"><span class="chapter-no">第八章</span><h2>打造项目主页：README + Markdown + Pages + Release</h2></div>
+  <p class="lead">前面几章让你的项目"能用、能同步、能协作"了，这一章让你的项目"好看、好用、像样"——写好 README 门面，再用 GitHub Pages 免费发布网页，用 Release 发布正式版本。</p>
+
+  <h3>8.1 Markdown：写 README 的语言</h3>
+  <p>Markdown 是第一章介绍过的"简易排版语言"，README 就是用 .md 后缀的文件写的。它简单到几分钟就能学会。下面是全部常用语法：</p>
+  <div class="table-wrap">
+    <table>
+      <caption>Markdown 最常用语法对照表</caption>
+      <thead>
+        <tr><th scope="col">你写的</th><th scope="col">效果</th><th scope="col">说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code># 标题</code></td><td>一级标题（最大）</td><td>井号越多级别越小</td></tr>
+        <tr><td><code>## 二级标题</code></td><td>二级标题</td><td>最多到 ######</td></tr>
+        <tr><td><code>**加粗**</code></td><td><strong>加粗</strong></td><td>两个星号包住文字</td></tr>
+        <tr><td><code>*斜体*</code></td><td>斜体</td><td>一个星号包住</td></tr>
+        <tr><td><code>- 列表项</code></td><td>• 列表项</td><td>减号 + 空格，无序列表</td></tr>
+        <tr><td><code>1. 第一项</code></td><td>1. 第一项</td><td>数字 + 点，有序列表</td></tr>
+        <tr><td><code>[文字](网址)</code></td><td>可点击链接</td><td>方括号放文字，圆括号放网址</td></tr>
+        <tr><td><code>![说明](图片地址)</code></td><td>显示图片</td><td>比链接多个感叹号</td></tr>
+        <tr><td><code>&gt; 引用</code></td><td>引用块</td><td>行首加大于号</td></tr>
+        <tr><td><code>`代码`</code></td><td>行内代码</td><td>单个反引号包住</td></tr>
+        <tr><td>代码块</td><td>多行代码块</td><td>用三个反引号包起来，可标注语言</td></tr>
+        <tr><td><code>---</code></td><td>分隔线</td><td>三个横线</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>多行代码块的写法（注意语言名字可以写 python、bash 等，代码会高亮）：</p>
+  <pre class="markdown"><code>&#96;&#96;&#96;python
+print("你好，世界")
+&#96;&#96;&#96;</code></pre>
+
+  <h3>8.2 写一个像样的 README</h3>
+  <p>一个开源项目的 README 就像它的"简历"，读者和贡献者都是先看它。建议包含这些部分（不一定要全，但"简介 + 用法"必须有）：</p>
+  <ul class="plain">
+    <li><b class="k">项目名 + 一句话简介</b>：我是干什么的，解决什么问题。</li>
+    <li><b class="k">功能特性</b>：用 <code>- </code> 列表列 3～5 个亮点。</li>
+    <li><b class="k">安装 / 使用方法</b>：别人拿到你的代码后，怎么运行？给出命令。</li>
+    <li><b class="k">使用示例</b>：放几张截图（<code>![说明](图片地址)</code>）或一段运行结果。</li>
+    <li><b class="k">贡献方式</b>：欢迎别人参与，写一句"欢迎提 Issue 和 PR"。</li>
+    <li><b class="k">License</b>：开源协议，写明别人能用你的代码做什么。</li>
+    <li><b class="k">作者 / 联系方式</b>：你是谁，怎么联系你。</li>
+  </ul>
+
+  <h3>8.3 让 README 显示在仓库首页</h3>
+  <p>把写好的 <code>README.md</code> 放到仓库根目录，<code>git add</code> + <code>git commit</code> + <code>git push</code> 后，刷新 GitHub 仓库页面，它会自动渲染在文件列表下方，还带目录。就这么简单。</p>
+
+  <h3>8.4 GitHub Pages：免费发布你的网页</h3>
+  <p>GitHub 能免费帮你托管静态网页，让你拥有一个形如 <code>https://你的用户名.github.io/仓库名/</code> 的公开网址。非常适合给项目做展示页、做个人主页。步骤：</p>
+  <ol class="steps">
+    <li>
+      <strong>准备一个 index.html</strong>
+      <p>在仓库里新建一个 <code>index.html</code>（网页首页），写点内容，比如"你好，这是我的项目主页！"，然后 push 到 GitHub。</p>
+    </li>
+    <li>
+      <strong>打开仓库 Settings → 左侧 Pages</strong>
+    </li>
+    <li>
+      <strong>选择发布源</strong>
+      <p>在 Source 那里选 <strong>Deploy from a branch</strong>，Branch 选 <code>main</code>，后面的下拉框选 <code>/(root)</code>，点 <strong>Save</strong>。</p>
+    </li>
+    <li>
+      <strong>稍等片刻，访问你的网址</strong>
+      <p>等 1～2 分钟后刷新页面，上方会显示你的网址，打开它——你的个人网页上线了！</p>
+    </li>
+  </ol>
+  <div class="box note">
+    <span class="bt">💡 成就感时刻</span>
+    第一次看到自己的网页能被全世界访问，感觉非常棒。这是你从"学 Python 的小白"迈向"开源贡献者"的重要一步。
+  </div>
+
+  <h3>8.5 Release：发布正式版本</h3>
+  <p>当你的项目稳定了，可以用 Release 发布正式版（如 v1.0.0），别人可以直接下载。步骤：</p>
+  <ol class="steps">
+    <li>
+      <strong>进入仓库的 Releases 区</strong>
+      <p>仓库页面右侧找到 <strong>Releases</strong>，点进去，再点 <strong>Create a new release</strong>。</p>
+    </li>
+    <li>
+      <strong>创建版本标签</strong>
+      <p>点 <strong>Choose a tag</strong>，在输入框里填 <code>v1.0.0</code>，点 <strong>Create new tag on publish</strong>。Tag（标签）就是给某个时间点贴书签。</p>
+    </li>
+    <li>
+      <strong>写发布说明</strong>
+      <p>标题填 <code>v1.0.0</code>，说明里写这一版新增了什么、修复了什么。</p>
+    </li>
+    <li>
+      <strong>上传附件（可选）并发布</strong>
+      <p>可以把打包好的 .zip 等文件拖到 "Attach binaries" 区域。最后点 <strong>Publish release</strong>。</p>
+    </li>
+  </ol>
+</section>
+
+<section class="chapter" id="chap9">
+  <div class="chapter-head"><span class="chapter-no">第九章</span><h2>常见问题和解决环境（12 个高频坑）</h2></div>
+  <p class="lead">以下是新手最容易踩的 12 个坑，全部按"现象 → 原因（大白话）→ 解决步骤"整理。出问题时点开对应条目，照着做就行。<strong>先别慌，报错不是世界末日，Git 的报错恰恰是它想帮你。</strong></p>
+
+  <details>
+    <summary>Q1 · 安装 Git 失败 / 装到一半出错</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>双击安装包报错、进度条卡住或中途退出。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>权限不够、下载的文件损坏、被杀毒软件拦截、磁盘空间不足，这几种最常见。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>右键安装包，选择"以管理员身份运行"。</li>
+          <li>重新去官网下载一次安装包（之前那个可能下载不完整）。</li>
+          <li>暂时关闭杀毒软件/防火墙后重试，装完再打开。</li>
+          <li>检查 C 盘剩余空间是否足够。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q2 · 命令行找不到 git 命令</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>输入 <code>git --version</code> 提示 <code>'git' 不是内部或外部命令</code>，或 <code>bash: git: command not found</code>。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>Git 没装上，或者装了但"系统找不到它"（没加入环境变量 PATH）——就像家里有个工具箱但没告诉保姆它放在哪。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>先确认是否真的装过：去开始菜单搜 "Git Bash"，有就说明装上了，问题只是 PATH。</li>
+          <li>重新运行安装程序，在安装选项里，PATH 相关选项选默认的 <strong>Recommended</strong>（Git from the command line）。</li>
+          <li>装完后<strong>关掉旧窗口，重新打开 Git Bash</strong>再试。</li>
+          <li>仍不行：右键"此电脑" → 属性 → 高级系统设置 → 环境变量 → 在系统变量 Path 里添加 <code>C:\Program Files\Git\cmd</code>，确定后重开窗口。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q3 · 中文乱码</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>命令行里中文显示成乱码，或中文文件名变成 <code>\346\226\207</code> 这样的转义符号。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>编码不一致。Windows 系统默认用 GBK/ANSI，而 Git 和 GitHub 用 UTF-8，两边"说话的口音"不一样。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>在 Git Bash 里执行下面这条经典命令，让中文文件名正常显示：<pre><code><span class="p">$</span> git config --global core.quotepath false</code></pre></li>
+          <li>文件内容用 UTF-8 编码保存：在 VS Code 右下角把编码切换成 "UTF-8"。</li>
+          <li>提交说明里写中文是没问题的，关键是文件和终端统一用 UTF-8。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q4 · SSH 配置报错 / Permission denied (publickey)</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>push 或 clone 时报 <code>Permission denied (publickey)</code>，连接不上。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>GitHub 不认你这台电脑的钥匙。最常见是：公钥没复制完整、粘贴时多了空格、或地址用成了 HTTPS 却以为配好了 SSH。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>先测试：<code>ssh -T git@github.com</code>，看具体报错内容。</li>
+          <li>确认钥匙存在：<code>ls ~/.ssh/</code>，应看到 <code>id_ed25519</code> 和 <code>id_ed25519.pub</code> 两个文件。</li>
+          <li>重新 <code>cat ~/.ssh/id_ed25519.pub</code> 复制公钥，确认没漏字符，去 GitHub 的 Settings → SSH and GPG keys 检查是否粘贴正确。</li>
+          <li>确认你用的地址是 SSH 格式（<code>git@github.com:...</code>）而不是 HTTPS。</li>
+          <li>如果换了新电脑没生成钥匙，回到第五章 5.2 重新生成并添加公钥。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q5 · 登录认证失败（GitHub 要求用 Token）</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>push 时报 <code>remote: Support for password authentication was removed. Please use a personal access token instead.</code></div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>GitHub 出于安全，已经不允许用"密码"来 push 了，必须用一串专用的"令牌（Token）"当密码。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>生成 Token：GitHub 点头像 → Settings → 左下角 Developer settings → Personal access tokens → Tokens (classic) → Generate new token。</li>
+          <li>勾选 <code>repo</code> 权限（第一个大类），有效期随意，点 Generate 后<strong>立即复制保存</strong>（只显示一次）。</li>
+          <li>push 时提示输用户名，填你的 GitHub 用户名；提示输密码处，粘贴这串 Token（不是真实密码）。</li>
+          <li>想一劳永逸，直接改用 SSH 方式（见第五章），连 Token 都不用再输。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q6 · push 被拒绝（failed to push some refs / 非 fast-forward）</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>push 时报 <code>! [rejected]</code>、<code>failed to push some refs</code>，或提到 <code>non-fast-forward</code>。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>远程仓库里有你本地没有的新提交（比如别人先推了，或你建仓库时勾了 README）。Git 保护规则：不能覆盖别人已有的内容，先同步再上传。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>先拉取远程更新：<code>git pull</code>（如有冲突按第六章 6.4 解决）。</li>
+          <li>或者用 <code>git pull --rebase</code>，把远程改动"垫"在你本地改动前面，历史更整洁。</li>
+          <li>解决完冲突后，再执行 <code>git push</code> 即可。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q7 · 网络 / 代理问题（clone 或 push 超时）</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>clone/push 一直卡住、报 <code>timeout</code>、<code>unable to access</code>、<code>连接超时</code>。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>网络不稳定，或在国内访问 GitHub 时"路上堵车"，或电脑开了代理但 Git 不知道走代理。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>先换个网络试试（手机热点、不同运营商），这是最快的排查方法。</li>
+          <li>如果你开了代理软件，让 Git 也走代理（端口换成你软件里的端口）：<pre><code><span class="p">$</span> git config --global http.proxy http://127.0.0.1:7890</code></pre></li>
+          <li>取消代理：<pre><code><span class="p">$</span> git config --global --unset http.proxy</code></pre></li>
+          <li>加大超时时间，避免过早报错：<pre><code><span class="p">$</span> git config --global http.lowSpeedLimit 0
+<span class="p">$</span> git config --global http.lowSpeedTime 999999</code></pre></li>
+          <li>克隆超大项目时可以尝试用加速镜像（注意只用于下载提速，不改你的远程地址）。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q8 · Windows 换行符 CRLF 问题</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>add 时提示 <code>warning: LF will be replaced by CRLF</code> 或反过来。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>Windows 里"换行"习惯是回车+换行两个符号（CRLF），而 Linux/Mac 只用换行（LF）。Git 在两边自动"翻译"，就弹出了提示。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>这只是提示，不是错误，通常直接无视即可。</li>
+          <li>想统一，执行 <code>git config --global core.autocrlf true</code>（Windows 上推荐，Git 自动处理换行符）。</li>
+          <li>团队项目里通常有 .gitattributes 文件统一约定，跟着项目来就行。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q9 · commit 忘加 -m，进了奇怪界面退不出去</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>输入 <code>git commit</code>（没带 -m）后，进入一个黑乎乎的界面，按什么都没反应，很吓人。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>你进入了 Vim 编辑器，Git 让你在这里写提交说明。它和老式的记事本不太一样，新手容易懵。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>按 <code>i</code> 键进入编辑状态（左下角会出现 INSERT），输入你的提交说明。</li>
+          <li>按 <code>Esc</code> 键退出编辑，输入 <code>:wq</code> 然后回车（保存并退出）。</li>
+          <li>想直接放弃本次提交：按 <code>Esc</code>，输入 <code>:q!</code> 回车（强制退出不保存）。</li>
+          <li>更省心的办法：以后都用 <code>git commit -m "说明"</code>，根本不会进这个界面。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q10 · fatal: not a git repository</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>输入任何 git 命令，报 <code>fatal: not a git repository (or any of the parent directories)</code>。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>当前文件夹还不是仓库（没执行过 <code>git init</code>），或者你在错误的文件夹里打开了 Git Bash。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>用 <code>pwd</code> 看一下当前路径，确认你在项目文件夹里。</li>
+          <li>如果这确实是要做成仓库的文件夹，先执行 <code>git init</code> 初始化。</li>
+          <li>如果不是，用 <code>cd 文件夹名</code> 进入正确的文件夹再操作。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q11 · 每次 push 都要输用户名密码</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>明明配好了，但每次 push 还是提示输入账号密码。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>你用的是 HTTPS 地址，且凭据没被记住。Windows 上 Git 默认会用"凭据管理器"帮你记住。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>执行 <code>git config --global credential.helper manager</code>，下次登录时勾选记住。</li>
+          <li>或者干脆改用 SSH 方式（推荐）：重新配好 SSH 后，把远程地址换成 SSH 格式 <code>git remote set-url origin git@github.com:用户名/项目.git</code>，一劳永逸。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Q12 · 改错了想反悔（撤销操作）</summary>
+    <div class="faq-body">
+      <div class="faq-row"><span class="fh">现象：</span>改了文件想撤销，或提交错了想回退。</div>
+      <div class="faq-row reason"><span class="fh">原因（大白话）：</span>Git 给你准备了不同阶段的"后悔药"，但吃法要看你在哪个阶段。</div>
+      <div class="faq-row solve"><span class="fh">解决步骤：</span>
+        <ol>
+          <li>还没 add（改动还是"未暂存"）：<code>git checkout -- 文件名</code>，放弃对该文件的修改（<strong>注意：会丢失修改内容</strong>）。</li>
+          <li>已经 add 但还没 commit：<code>git reset 文件名</code>，把它撤出暂存区，改动还在。</li>
+          <li>已经 commit 想回退：<code>git reset --hard HEAD~1</code>，回退到上一个提交（<strong>慎用：会丢弃该提交及其改动</strong>）。</li>
+          <li>只想临时把手头改动收起来、先干别的：<code>git stash</code>（藏起来），之后用 <code>git stash pop</code> 取回。</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section class="chapter" id="appendix">
+  <div class="chapter-head"><span class="chapter-no">附录</span><h2>Git 常用命令速查表</h2></div>
+  <p class="lead">最后一份"小抄"，复制粘贴就能用。建议把这一页收藏起来，或者截图保存。</p>
+  <div class="table-wrap">
+    <table>
+      <caption>Git 常用命令速查表（按使用频率排列）</caption>
+      <thead>
+        <tr><th scope="col">命令</th><th scope="col">作用（大白话）</th><th scope="col">什么时候用</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>git init</code></td><td>把当前文件夹变成仓库</td><td>开始新项目时</td></tr>
+        <tr><td><code>git status</code></td><td>查看当前改动状态</td><td>随时想看看改了什么</td></tr>
+        <tr><td><code>git add 文件名</code></td><td>把文件装进"待存档箱"</td><td>提交之前</td></tr>
+        <tr><td><code>git add .</code></td><td>把当前所有改动都装进去</td><td>改动很多时</td></tr>
+        <tr><td><code>git commit -m "说明"</code></td><td>存一次档</td><td>完成一个改动后</td></tr>
+        <tr><td><code>git log</code></td><td>查看存档历史</td><td>想看之前存了啥</td></tr>
+        <tr><td><code>git branch</code></td><td>查看所有分支</td><td>分支管理</td></tr>
+        <tr><td><code>git checkout -b 新分支</code></td><td>新建并切换到新分支</td><td>开始新任务</td></tr>
+        <tr><td><code>git checkout 分支名</code></td><td>切换到某个分支</td><td>换任务时</td></tr>
+        <tr><td><code>git merge 分支名</code></td><td>把某分支合并进当前分支</td><td>收尾合并</td></tr>
+        <tr><td><code>git clone 地址</code></td><td>把远程仓库整套复制到本地</td><td>第一次拿项目</td></tr>
+        <tr><td><code>git remote add origin 地址</code></td><td>关联远程仓库</td><td>首次连接</td></tr>
+        <tr><td><code>git remote -v</code></td><td>查看远程仓库地址</td><td>排查连接问题</td></tr>
+        <tr><td><code>git push</code></td><td>上传本地改动到远程</td><td>备份 / 分享</td></tr>
+        <tr><td><code>git pull</code></td><td>下载远程最新改动</td><td>同步别人的更新</td></tr>
+        <tr><td><code>git fetch</code></td><td>只下载远程信息，先不合并</td><td>想先看看远程有啥</td></tr>
+        <tr><td><code>git diff</code></td><td>看具体改了什么内容</td><td>检查改动细节</td></tr>
+        <tr><td><code>git stash</code></td><td>临时把改动藏起来</td><td>需要先干别的</td></tr>
+        <tr><td><code>git config --global ...</code></td><td>设置全局名字 / 邮箱</td><td>第一次配置</td></tr>
+        <tr><td><code>git tag v1.0.0</code></td><td>给某次提交打标签</td><td>发布版本</td></tr>
+        <tr><td><code>git reset HEAD~1</code></td><td>回退一次提交（慎用）</td><td>反悔</td></tr>
+        <tr><td><code>git rm 文件名</code></td><td>从仓库删除文件</td><td>移除文件</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="chapter" id="resources">
+  <div class="chapter-head"><span class="chapter-no">资源</span><h2>相关资源：官方文档和工具</h2></div>
+  <p class="lead">以下都是官方或权威的免费资源，遇到问题优先查它们（都是中文或英文官网，可放心打开）。</p>
+  <ul class="plain">
+    <li><a href="https://git-scm.com/doc" target="_blank" rel="noopener noreferrer">Git 官方文档</a>：Git 最权威的参考，有中文版。</li>
+    <li><a href="https://docs.github.com/zh" target="_blank" rel="noopener noreferrer">GitHub 帮助文档（中文）</a>：GitHub 官方中文帮助，查功能、查报错都在这。</li>
+    <li><a href="https://desktop.github.com/" target="_blank" rel="noopener noreferrer">GitHub Desktop（图形化客户端）</a>：不想敲命令的新手可用它，点点按钮就能 push / pull。</li>
+    <li><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub 官网（注册入口）</a>：注册账号、浏览全世界开源项目。</li>
+    <li><a href="https://docs.github.com/zh/get-started/writing-on-github" target="_blank" rel="noopener noreferrer">Markdown 官方指南</a>：GitHub 上写 README 的官方排版语法。</li>
+  </ul>
+</section>
+
+<section class="chapter" id="finish">
+  <div class="chapter-head"><span class="chapter-no">尾声</span><h2>结语 · 学完之后下一步做什么</h2></div>
+  <p class="lead">恭喜你读到这里！现在你已经掌握了：</p>
+  <ul class="plain">
+    <li>把"黑话"翻译成人话的能力（第一章名词卡片随时可查）；</li>
+    <li>注册账号、安装 Git、本地存档（init / add / commit）；</li>
+    <li>云端同步（SSH、clone、push、pull）；</li>
+    <li>分支协作和 Pull Request 的标准流程；</li>
+    <li>Fork 参与他人开源项目；</li>
+    <li>用 README 和 GitHub Pages 展示项目、用 Release 发布版本。</li>
+  </ul>
+  <p>下一步的四个建议：</p>
+  <ol class="steps">
+    <li><strong>把你在学的 Python 作业或小项目放上 GitHub</strong>：建仓库、写 README、发 v1.0.0，走一遍完整流程，你会非常有成就感。</li>
+    <li><strong>每天 Star 一个喜欢的开源项目</strong>：逛一逛 GitHub 热门榜，看看优秀项目的 README 是怎么写的，慢慢就有感觉了。</li>
+    <li><strong>找一个 good first issue 练手</strong>：从修文档错字开始，完成你的第一次开源贡献。</li>
+    <li><strong>把这份教程存好</strong>：报错了就翻第九章，忘了命令就翻附录。教程不用背，用起来自然会熟。</li>
+  </ol>
+  <div class="box note">
+    <span class="bt">💡 最后一句话</span>
+    刚开始报错是很正常的，Git 的报错其实是在帮你。遇到问题，深呼吸，读一遍报错文字，再回来翻第九章——<strong>你离一个真正的开源贡献者，只差一个 commit 的距离。</strong>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>GitHub 零基础教程 · 面向非计算机行业的完全小白 · 纯教程内容，不涉及任何用户隐私。遇到问题可返回第九章，或查阅<a href="https://docs.github.com/zh" target="_blank" rel="noopener noreferrer">GitHub 官方帮助文档（中文）</a>。</p>
+</footer>
+
+</div>
+</main>
+
+<button id="back-top" class="back-top" aria-label="返回顶部">↑</button>
+
+<script>
+(function () {
+  "use strict";
+  var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function smoothTo(el) {
+    if (prefersReduced) { el.scrollIntoView({ block: "start" }); }
+    else { el.scrollIntoView({ behavior: "smooth", block: "start" }); }
+  }
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("nav-overlay");
+  var hamb = document.getElementById("hamb");
+  function closeNav() {
+    if (sidebar) { sidebar.classList.remove("open"); }
+    if (overlay) { overlay.classList.remove("show"); }
+    document.body.classList.remove("nav-open");
+    if (hamb) { hamb.setAttribute("aria-expanded", "false"); }
+  }
+  function openNav() {
+    if (sidebar) { sidebar.classList.add("open"); }
+    if (overlay) { overlay.classList.add("show"); }
+    document.body.classList.add("nav-open");
+    if (hamb) { hamb.setAttribute("aria-expanded", "true"); }
+  }
+  if (hamb) { hamb.addEventListener("click", function () { sidebar && sidebar.classList.contains("open") ? closeNav() : openNav(); }); }
+  if (overlay) { overlay.addEventListener("click", closeNav); }
+
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest('a[href^="#"]');
+    if (!link) { return; }
+    var id = link.getAttribute("href").slice(1);
+    if (!id) { return; }
+    var target = document.getElementById(id);
+    if (!target) { return; }
+    e.preventDefault();
+    smoothTo(target);
+    if (sidebar && sidebar.contains(link)) { closeNav(); }
+  });
+
+  var topBtn = document.getElementById("back-top");
+  window.addEventListener("scroll", function () {
+    if (window.scrollY > 600) { topBtn.classList.add("show"); }
+    else { topBtn.classList.remove("show"); }
+  }, { passive: true });
+  if (topBtn) { topBtn.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: prefersReduced ? "auto" : "smooth" });
+  }); }
+
+  var search = document.getElementById("gloss-search");
+  var pills = Array.prototype.slice.call(document.querySelectorAll(".pill"));
+  var groups = Array.prototype.slice.call(document.querySelectorAll(".gloss-group"));
+  var resultInfo = document.getElementById("gloss-result");
+  var totalCards = document.querySelectorAll(".gloss-card").length;
+  var activeCat = "all";
+  function applyFilter() {
+    var q = search ? search.value.trim().toLowerCase() : "";
+    var shown = 0;
+    groups.forEach(function (g) {
+      var groupCat = g.getAttribute("data-cat");
+      var groupVisible = false;
+      var cards = g.querySelectorAll(".gloss-card");
+      Array.prototype.forEach.call(cards, function (card) {
+        var text = (card.getAttribute("data-search") || "").toLowerCase();
+        var catOk = activeCat === "all" || groupCat === activeCat;
+        var qOk = !q || text.indexOf(q) >= 0;
+        var show = catOk && qOk;
+        card.classList.toggle("hide", !show);
+        if (show) { shown++; groupVisible = true; }
+      });
+      g.classList.toggle("hide", !groupVisible);
+    });
+    if (resultInfo) {
+      if (q || activeCat !== "all") { resultInfo.textContent = "显示 " + shown + " 个词条（共 " + totalCards + " 个）"; }
+      else { resultInfo.textContent = "共 " + totalCards + " 个词条，输入关键词即可筛选"; }
+    }
+  }
+  if (search) { search.addEventListener("input", applyFilter); }
+  pills.forEach(function (p) {
+    p.addEventListener("click", function () {
+      pills.forEach(function (x) { x.classList.remove("active"); });
+      p.classList.add("active");
+      activeCat = p.getAttribute("data-cat");
+      applyFilter();
+    });
+  });
+  applyFilter();
+
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#sidebar a[href^="#"]'));
+  var spyItems = [];
+  tocLinks.forEach(function (l) {
+    var el = document.getElementById(l.getAttribute("href").slice(1));
+    if (el) { spyItems.push({ link: l, el: el }); }
+  });
+  function spy() {
+    var pos = window.scrollY + 130;
+    var current = null;
+    spyItems.forEach(function (s) { if (s.el.offsetTop <= pos) { current = s; } });
+    tocLinks.forEach(function (l) { l.classList.remove("active"); });
+    if (current) { current.link.classList.add("active"); }
+  }
+  window.addEventListener("scroll", spy, { passive: true });
+  spy();
+})();
+</script>
+</body>
+</html>
