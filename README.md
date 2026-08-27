@@ -35,7 +35,6 @@
 ## 📞 联系与交流
 
 如果你有任何问题，欢迎通过以下方式与我交流：
-- 在本仓库提交https://github.com/Xiaoxiao0321/-01/issues
-- 邮箱：1536716308@qq.com
+- 在本仓库提交[https://github.com/Xiaoxiao0321/-01/issues](https://github.com/Xiaoxiao0321/GitHub-tutorial/issues)
 ## 致谢
 本教程网页在制作过程中，使用了 **扣子（Coze）** 平台进行辅助构建与原型设计。感谢扣子（Coze）提供的技术支持。
